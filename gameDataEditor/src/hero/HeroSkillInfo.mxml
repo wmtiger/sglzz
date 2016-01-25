@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   fontFamily="微软雅黑" fontSize="15" 
+				   creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="200" height="300">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				heroSkillList.dataProvider = new ArrayCollection([{templateId:10001, name:"呼风唤雨"}, null]);
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="5" y="5" text="武将技能信息"/>
+	<s:List id="heroSkillList" left="5" right="5" top="25" bottom="5"
+			itemRenderer="hero.HeroSkillRender"></s:List>
+</s:BorderContainer>

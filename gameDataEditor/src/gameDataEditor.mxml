@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   fontFamily="微软雅黑" fontSize="15" width="960" height="720" 
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)" xmlns:hero="hero.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			/////////////////////// 以下变量区
+			
+//			private const tabNames:ArrayCollection = new ArrayCollection(["武将", "将魂", "技能", "物品", "状态", "副本", "公共事件", "系统", "用语"]);
+			
+			/////////////////////// 以上变量区
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<mx:TabNavigator left="10" right="10" top="10" bottom="10">
+		<hero:HeroNavContent id="heroContent" width="100%" height="100%" label="武将" >
+		</hero:HeroNavContent>
+		<s:NavigatorContent id="heroSoulContent" width="100%" height="100%" label="将魂">
+		</s:NavigatorContent>
+		<s:NavigatorContent id="skillContent" width="100%" height="100%" label="技能">
+		</s:NavigatorContent>
+		<s:NavigatorContent id="itemContent" width="100%" height="100%" label="物品">
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+</s:WindowedApplication>

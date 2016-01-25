@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   fontFamily="微软雅黑" fontSize="15" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="390">
+	<fx:Script>
+		<![CDATA[
+			import spark.events.IndexChangeEvent;
+			
+			protected function boxAtkType_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function boxQuality_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="5" y="5" text="基本信息"/>
+	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
+	<s:TextInput id="inputTid" x="42" y="25" width="90"/>
+	<s:Label x="145" y="30" text="名字"/>
+	<s:Label x="315" y="30" text="头像 ↓"/>
+	<s:TextInput id="inputName" x="182" y="25" width="120"/>
+	<s:Label x="185" y="60" text="初始等级"/>
+	<s:TextInput id="inputInitLevel" x="252" y="55" width="50" text="1"/>
+	<s:Label x="185" y="90" text="最大等级"/>
+	<s:TextInput id="inputMaxLevel" x="252" y="85" width="50" text="100"/>
+	<s:Label x="5" y="60" text="攻击方式"/>
+	<s:ComboBox id="boxAtkType" x="72" y="56" width="100" change="boxAtkType_changeHandler(event)"/>
+	<s:Label x="5" y="90" text="品质"/>
+	<s:ComboBox id="boxQuality" x="72" y="86" width="100" change="boxQuality_changeHandler(event)"/>
+	<s:Label x="5" y="283" text="简介"/>
+	<s:Label x="5" y="228" text="拍马屁"/>
+	<s:TextArea id="inputIntro" left="5" right="5" top="303" bottom="5"/>
+	<s:BorderContainer x="315" y="46" width="66" height="66">
+		<s:Image x="0" y="0" width="64" height="64"/>
+	</s:BorderContainer>
+	<mx:HRule y="116" left="0" right="0"/>
+	<mx:HRule y="216" left="0" right="0"/>
+	<s:TextInput id="inputKissAss" y="223" left="58" right="5"/>
+	<s:Label x="5" y="128" text="攻击音效"/>
+	<s:TextInput id="inputAtkSE" x="72" y="123" width="100"/>
+	<s:Label x="185" y="128" text="死亡音效"/>
+	<s:TextInput id="inputDeadSE" x="252" y="123" width="100"/>
+	<s:Label x="5" y="258" text="口头禅"/>
+	<s:TextInput id="inputTics" y="253" left="58" right="5"/>
+</s:BorderContainer>
