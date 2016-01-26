@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					fontFamily="微软雅黑" fontSize="15" 
+					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:item="item.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="itemList" left="10" top="0" bottom="40" width="140"
+			itemRenderer="item.ItemRender"></s:List>
+	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加物品"
+			  click="btnAddItem_clickHandler(event)"/>
+	<s:BorderContainer left="160" top="0" right="10" bottom="10">
+		<item:ItemBaseInfo left="10" top="10" right="355" bottom="300" />
+	</s:BorderContainer>
+</s:NavigatorContent>

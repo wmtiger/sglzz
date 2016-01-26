@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   fontFamily="微软雅黑" fontSize="15" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//-------------------
+			// 变量定义区
+			[Bindable]
+			private var _boxStackData:ArrayCollection = new ArrayCollection([{value:1, name:"是"}, {value:0, name:"否"}]);
+			[Bindable]
+			private var _boxQualityData:ArrayCollection = new ArrayCollection([{value:0, name:"白"}, {value:1, name:"绿"}, {value:2, name:"蓝"}, {value:3, name:"紫"}, {value:4, name:"橙"}]);
+			[Bindable]
+			private var _boxItemTypeData:ArrayCollection = new ArrayCollection([{value:1, name:"道具"}, {value:2, name:"材料"}]);
+			
+			//-------------------
+			
+			protected function getBoxFullValue(item:Object):String
+			{
+				return item["value"] + ": " + item["name"];
+			}
+			
+			protected function boxStack_changeHandler(event:IndexChangeEvent):void
+			{
+				var obj:Object = boxStack.selectedItem;
+				if(obj){
+					if(obj["value"] == 0){
+						inputStackMax.text = "1";
+					}else{
+						inputStackMax.text = "99";
+					}
+				}
+			}
+			
+			protected function boxItemType_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function boxItemQuality_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="5" y="5" text="基本信息"/>
+	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
+	<s:TextInput id="inputTid" x="32" y="25" width="107"/>
+	<s:TextInput id="inputTid0" x="42" y="57" width="97"/>
+	<s:Label x="147" y="30" text="名字"/>
+	<s:TextInput id="inputName" x="185" y="25" width="120"/>
+	<s:Label x="238" y="163" text="堆叠"/>
+	<s:ComboBox id="boxStack" x="274" y="159" width="65" change="boxStack_changeHandler(event)"
+				dataProvider="{_boxStackData}" itemRenderer="normal.BoxNormalRender"
+				selectedIndex="0" labelFunction="getBoxFullValue"/>
+	<s:TextInput id="inputStackMax" x="343" y="158" width="50" text="99"/>
+	<s:Label x="5" y="163" text="类型"/>
+	<s:ComboBox id="boxItemType" x="40" y="159" width="85" change="boxItemType_changeHandler(event)"
+				dataProvider="{_boxItemTypeData}" itemRenderer="normal.BoxNormalRender"
+				selectedIndex="0" labelFunction="getBoxFullValue"/>
+	<s:Label x="132" y="163" text="品质"/>
+	<s:ComboBox id="boxItemQuality" x="167" y="159" width="65" labelFunction="getBoxFullValue"
+				change="boxItemQuality_changeHandler(event)" dataProvider="{_boxQualityData}"
+				itemRenderer="normal.BoxNormalRender" selectedIndex="0"/>
+	<s:Label x="5" y="62" text="图像"/>
+	<s:BorderContainer x="42" y="86" width="66" height="66">
+		<s:Image x="0" y="0" width="64" height="64"/>
+	</s:BorderContainer>
+	<s:Label x="147" y="62" text="简介"/>
+	<s:TextArea id="inputIntro" left="185" right="5" top="58" height="94"/>
+</s:BorderContainer>

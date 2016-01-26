@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640">
+	
+	<fx:Script>
+		<![CDATA[
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="itemList" left="10" top="0" bottom="40" width="140"
+			itemRenderer="item.ItemRender"></s:List>
+	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加装备"
+			  click="btnAddItem_clickHandler(event)"/>
+	<s:BorderContainer left="160" top="0" right="10" bottom="10">
+		<item:ItemBaseInfo left="10" top="10" right="355" bottom="300" />
+	</s:BorderContainer>
+</s:NavigatorContent>

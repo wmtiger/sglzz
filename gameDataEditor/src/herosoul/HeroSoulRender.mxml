@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				dataChange="resetData(event)"
+				autoDrawBackground="true">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function resetData(event:FlexEvent):void
+			{
+				if(data){
+					labName.text = data.templateId + ": " + data.name;
+					
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label id="labName" left="0" right="0" top="0" bottom="0" textAlign="left"
+			 verticalAlign="middle"/>
+	<mx:HRule left="0" right="0" bottom="0"/>
+	
+	
+</s:ItemRenderer>

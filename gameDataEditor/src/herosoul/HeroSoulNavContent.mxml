@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					fontFamily="微软雅黑" fontSize="15" 
+					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnAddSoul_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="heroSoulList" left="10" top="0" bottom="40" width="140"
+			itemRenderer="herosoul.HeroSoulRender"></s:List>
+	<s:Button id="btnAddSoul" left="10" bottom="10" width="140" label="增加将魂"
+			  click="btnAddSoul_clickHandler(event)"/>
+	<s:BorderContainer left="160" top="0" right="10" bottom="10">
+	</s:BorderContainer>
+</s:NavigatorContent>
