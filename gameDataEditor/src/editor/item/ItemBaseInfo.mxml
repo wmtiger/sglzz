@@ -2,6 +2,7 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
+				   implements="editor.normal.IDataIO"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
 	<fx:Script>
 		<![CDATA[
@@ -16,7 +17,7 @@
 			[Bindable]
 			private var _boxQualityData:ArrayCollection = new ArrayCollection([{value:0, name:"白"}, {value:1, name:"绿"}, {value:2, name:"蓝"}, {value:3, name:"紫"}, {value:4, name:"橙"}]);
 			[Bindable]
-			private var _boxItemTypeData:ArrayCollection = new ArrayCollection([{value:1, name:"道具"}, {value:2, name:"材料"}]);
+			private var _boxItemTypeData:ArrayCollection = new ArrayCollection([{value:1, name:"道具"}, {value:2, name:"材料"}, {value:3, name:"箱子"}]);
 			
 			//-------------------
 			
@@ -49,6 +50,18 @@
 				
 			}
 			
+			//----------------------
+			// 实现接口 IDataIO
+			//----------------------
+			
+			public function saveToFile():void{
+				
+			}
+			
+			public function showByObj(obj:Object):void{
+				
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -62,17 +75,17 @@
 	<s:TextInput id="inputName" x="185" y="25" width="120"/>
 	<s:Label x="238" y="163" text="堆叠"/>
 	<s:ComboBox id="boxStack" x="274" y="159" width="65" change="boxStack_changeHandler(event)"
-				dataProvider="{_boxStackData}" itemRenderer="normal.BoxNormalRender"
+				dataProvider="{_boxStackData}" itemRenderer="editor.normal.BoxNormalRender"
 				selectedIndex="0" labelFunction="getBoxFullValue"/>
 	<s:TextInput id="inputStackMax" x="343" y="158" width="50" text="99"/>
 	<s:Label x="5" y="163" text="类型"/>
 	<s:ComboBox id="boxItemType" x="40" y="159" width="85" change="boxItemType_changeHandler(event)"
-				dataProvider="{_boxItemTypeData}" itemRenderer="normal.BoxNormalRender"
+				dataProvider="{_boxItemTypeData}" itemRenderer="editor.normal.BoxNormalRender"
 				selectedIndex="0" labelFunction="getBoxFullValue"/>
 	<s:Label x="132" y="163" text="品质"/>
 	<s:ComboBox id="boxItemQuality" x="167" y="159" width="65" labelFunction="getBoxFullValue"
 				change="boxItemQuality_changeHandler(event)" dataProvider="{_boxQualityData}"
-				itemRenderer="normal.BoxNormalRender" selectedIndex="0"/>
+				itemRenderer="editor.normal.BoxNormalRender" selectedIndex="0"/>
 	<s:Label x="5" y="62" text="图像"/>
 	<s:BorderContainer x="42" y="86" width="66" height="66">
 		<s:Image x="0" y="0" width="64" height="64"/>

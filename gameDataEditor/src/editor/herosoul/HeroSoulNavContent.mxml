@@ -26,7 +26,7 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:List id="heroSoulList" left="10" top="0" bottom="40" width="140"
-			itemRenderer="herosoul.HeroSoulRender"></s:List>
+			itemRenderer="editor.herosoul.HeroSoulRender"></s:List>
 	<s:Button id="btnAddSoul" left="10" bottom="10" width="140" label="增加将魂"
 			  click="btnAddSoul_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">

@@ -3,7 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					fontFamily="微软雅黑" fontSize="15" 
 					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:skill="skill.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:skill="editor.skill.*">
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
@@ -26,7 +26,7 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:List id="skillList" left="10" top="0" bottom="40" width="140"
-			itemRenderer="skill.SkillRender"></s:List>
+			itemRenderer="editor.skill.SkillRender"></s:List>
 	<s:Button id="btnAddSkill" left="10" bottom="10" width="140" label="增加技能"
 			  click="btnAddSkill_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">

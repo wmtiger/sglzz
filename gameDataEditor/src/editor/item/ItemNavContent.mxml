@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					fontFamily="微软雅黑" fontSize="15" 
+					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:item="editor.item.*">
+	<fx:Script>
+		<![CDATA[
+			import editor.evt.EditEvt;
+			import editor.evt.EvtMgr;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//-------------------
+			// 变量定义区
+			[Bindable]
+			private var _listData:ArrayCollection = new ArrayCollection([]);
+			
+			private var _addItemWnd:AddItemWnd;
+			
+			//-------------------
+			
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_ITEM, onAddOneItem);
+			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				if(_addItemWnd == null){
+					_addItemWnd = new AddItemWnd();
+				}
+				PopUpManager.addPopUp(_addItemWnd, FlexGlobals.topLevelApplication as DisplayObject, true);
+			}
+			
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnSaveJson_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function itemList_changeHandler(event:IndexChangeEvent):void
+			{
+				// 选中某个render的时候，触发
+				flushInfoContent();
+			}
+			private function flushInfoContent():void{
+				if(itemList){
+					if(itemList.dataProvider.length <= 0){
+						infoContent.visible = false;
+					}else{
+						infoContent.visible = true;
+					}
+				}
+			}
+			
+			protected function itemList_addedToStageHandler(event:Event):void
+			{
+				flushInfoContent();
+			}
+			
+			protected function onAddOneItem(event:EditEvt):void
+			{
+				_listData.addItem(event.data);
+				PopUpManager.removePopUp(_addItemWnd);
+				itemList.selectedItem = event.data;
+			}
+			
+			protected function itemList_valueCommitHandler(event:FlexEvent):void
+			{
+				// 当已程序直接指定数据变化的时候，触发此方法
+				flushInfoContent();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="itemList" left="10" top="40" bottom="40" width="140" change="itemList_changeHandler(event)"
+			valueCommit="itemList_valueCommitHandler(event)"
+			addedToStage="itemList_addedToStageHandler(event)" dataProvider="{_listData}"
+			itemRenderer="editor.item.ItemRender"></s:List>
+	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加物品"
+			  click="btnAddItem_clickHandler(event)"/>
+	<s:BorderContainer id="infoContent" left="160" top="0" right="10" bottom="10">
+		<item:ItemBaseInfo left="10" right="355" top="10" bottom="300" backgroundColor="#DBEAEF"/>
+		<s:Button id="btnSave" right="10" bottom="10" label="保存" click="btnSave_clickHandler(event)"/>
+		<s:Button id="btnSaveJson" right="166" bottom="10" label="保存json"
+				  click="btnSaveJson_clickHandler(event)"/>
+		<s:Button id="btnDelete" right="88" bottom="10" label="删除"
+				  click="btnDelete_clickHandler(event)"/>
+	</s:BorderContainer>
+	<s:TextInput id="inputSearch" left="40" right="790" top="10" prompt="输入Tid或名字"/>
+	<s:Image x="10" y="10" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
+</s:NavigatorContent>

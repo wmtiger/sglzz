@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					fontFamily="微软雅黑" fontSize="15" 
+					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:hero="editor.hero.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			protected function btnAddHero_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				heroList.dataProvider = new ArrayCollection([{templateId:10001, name:"吕布"},{templateId:10002, name:"关羽"}]);
+			}
+			
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnSaveJson_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="heroList" left="10" top="0" bottom="40" width="140"
+			itemRenderer="editor.hero.HeroRender"></s:List>
+	<s:Button id="btnAddHero" left="10" bottom="10" width="140" label="增加武将"
+			  click="btnAddHero_clickHandler(event)"/>
+	<s:BorderContainer left="160" top="0" right="10" bottom="10">
+		<hero:HeroBaseInfo id="heroBaseInfoContent" left="10" top="10" width="55%" height="65%"
+						   backgroundColor="#DBEAEF"/>
+		<hero:HeroSoulBaseInfo id="heroSoulBaseInfoContent" left="10" bottom="10" width="55%"
+							   height="32%" backgroundColor="#DBEAEF"/>
+		<hero:HeroSkillInfo id="heroSkillInfoContent" right="10" top="10" width="43%" height="65%"
+							backgroundColor="#DBEAEF"/>
+		<s:Button id="btnSaveJson" right="166" bottom="10" label="保存json"
+				  click="btnSaveJson_clickHandler(event)"/>
+		<hero:HeroRemarkInfo id="heroRemarkInfoContent" right="10" bottom="40" width="43%"
+							 height="28%" backgroundColor="#DBEAEF"/>
+		<s:Button id="btnSave" right="10" bottom="10" label="保存" click="btnSave_clickHandler(event)"/>
+		<s:Button id="btnDelete" right="88" bottom="10" label="删除"
+				  click="btnDelete_clickHandler(event)"/>
+	</s:BorderContainer>
+</s:NavigatorContent>
