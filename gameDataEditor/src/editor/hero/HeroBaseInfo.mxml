@@ -42,7 +42,7 @@
 	<s:TextArea id="inputIntro" left="5" right="5" top="303" bottom="5"/>
 	<s:Label x="5" y="228" text="拍马屁"/>
 	<s:BorderContainer x="315" y="46" width="66" height="66">
-		<s:Image x="0" y="0" width="64" height="64"/>
+		<s:Image id="imgHead" x="0" y="0" width="64" height="64"/>
 	</s:BorderContainer>
 	<mx:HRule y="116" left="0" right="0"/>
 	<mx:HRule y="216" left="0" right="0"/>

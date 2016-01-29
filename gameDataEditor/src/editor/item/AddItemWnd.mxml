@@ -3,6 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="360" height="240" close="titlewindow1_closeHandler(event)"
+			   removedFromStage="titlewindow1_removedFromStageHandler(event)"
 			   creationComplete="navigatorcontent1_creationCompleteHandler(event)" fontFamily="微软雅黑"
 			   fontSize="15" title="增加物品">
 	<fx:Script>
@@ -44,14 +45,19 @@
 				inputName.text = "";
 			}
 			
+			protected function titlewindow1_removedFromStageHandler(event:Event):void
+			{
+				clearData();
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Label x="10" y="15" text="Tid" verticalAlign="middle"/>
-	<s:TextInput id="inputTid" x="37" y="10" width="107"/>
+	<s:TextInput id="inputTid" x="37" y="10" width="107" prompt="100001"/>
 	<s:Label x="152" y="15" text="名字"/>
-	<s:TextInput id="inputName" x="190" y="10" width="120"/>
+	<s:TextInput id="inputName" x="190" y="10" width="120" prompt="物品名字"/>
 	<s:Button id="btnAdd" right="10" bottom="10" label="确认增加" click="btnAdd_clickHandler(event)"/>
 </s:TitleWindow>
