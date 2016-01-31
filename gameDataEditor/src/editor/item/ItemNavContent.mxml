@@ -61,6 +61,8 @@
 			{
 				// 选中某个render的时候，触发
 				flushInfoContent();
+				var obj:Object = event.currentTarget.selectedItem;
+				setInfo(obj);
 			}
 			private function flushInfoContent():void{
 				if(itemList){
@@ -86,8 +88,14 @@
 			
 			protected function itemList_valueCommitHandler(event:FlexEvent):void
 			{
-				// 当已程序直接指定数据变化的时候，触发此方法
+				// 当用程序直接指定数据变化的时候，触发此方法
 				flushInfoContent();
+				var obj:Object = event.currentTarget.selectedItem;
+				setInfo(obj);
+			}
+			
+			protected function setInfo(obj:Object):void{
+				itemBaseInfo.showByObj(obj);
 			}
 			
 		]]>
@@ -96,13 +104,13 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:List id="itemList" left="10" top="40" bottom="40" width="140" change="itemList_changeHandler(event)"
-			valueCommit="itemList_valueCommitHandler(event)"
+			valueCommit="itemList_valueCommitHandler(event)" alternatingItemColors="[0xffffff,0xdfdfdf]"
 			addedToStage="itemList_addedToStageHandler(event)" dataProvider="{_listData}"
 			itemRenderer="editor.item.ItemRender"></s:List>
 	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加物品"
 			  click="btnAddItem_clickHandler(event)"/>
 	<s:BorderContainer id="infoContent" left="160" top="0" right="10" bottom="10">
-		<item:ItemBaseInfo left="10" right="355" top="10" bottom="300" backgroundColor="#DBEAEF"/>
+		<item:ItemBaseInfo id="itemBaseInfo" left="10" right="355" top="10" bottom="300" backgroundColor="#DBEAEF"/>
 		<s:Button id="btnSave" right="10" bottom="10" label="保存" click="btnSave_clickHandler(event)"/>
 		<s:Button id="btnSaveJson" right="166" bottom="10" label="保存json"
 				  click="btnSaveJson_clickHandler(event)"/>

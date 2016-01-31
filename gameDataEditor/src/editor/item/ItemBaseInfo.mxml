@@ -44,7 +44,6 @@
 			
 			protected function boxItemQuality_changeHandler(event:IndexChangeEvent):void
 			{
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -57,7 +56,8 @@
 			}
 			
 			public function showByObj(obj:Object):void{
-//				this.inputTid.text = "" + obj.
+				this.inputTid.text = "" + obj.templateId;
+				this.inputName.text = "" + obj.name;
 			}
 			
 		]]>

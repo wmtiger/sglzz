@@ -45,7 +45,7 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:List id="heroList" left="10" top="0" bottom="40" width="140"
+	<s:List id="heroList" left="10" top="0" bottom="40" width="140" alternatingItemColors="[0xffffff,0xdfdfdf]"
 			itemRenderer="editor.hero.HeroRender"></s:List>
 	<s:Button id="btnAddHero" left="10" bottom="10" width="140" label="增加武将"
 			  click="btnAddHero_clickHandler(event)"/>
