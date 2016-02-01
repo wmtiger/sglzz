@@ -11,6 +11,7 @@
 					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
 					   closing="windowedapplication1_closingHandler(event)"
 					   fontFamily="微软雅黑" fontSize="15">
+	<fx:Style source="gameDataEditor.css"/>
 	<fx:Script>
 		<![CDATA[
 			import mx.controls.Alert;

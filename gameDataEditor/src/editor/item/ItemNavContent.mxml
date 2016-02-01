@@ -98,6 +98,12 @@
 				itemBaseInfo.showByObj(obj);
 			}
 			
+			protected function btnImport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -114,6 +120,8 @@
 		<s:Button id="btnSave" right="10" bottom="10" label="保存" click="btnSave_clickHandler(event)"/>
 		<s:Button id="btnSaveJson" right="166" bottom="10" label="保存json"
 				  click="btnSaveJson_clickHandler(event)"/>
+		<s:Button id="btnImport" right="251" bottom="10" label="导入"
+				  click="btnImport_clickHandler(event)"/>
 		<s:Button id="btnDelete" right="88" bottom="10" label="删除"
 				  click="btnDelete_clickHandler(event)"/>
 	</s:BorderContainer>
