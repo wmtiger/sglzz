@@ -6,6 +6,8 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:item="editor.item.*">
 	<fx:Script>
 		<![CDATA[
+			import cfg.AppCfg;
+			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
 			
@@ -18,8 +20,14 @@
 			
 			//-------------------
 			// 变量定义区
+			public static const KEY:String = "item";
+			
+			public static const CSV_HEAD:Array = ["templateId", "name", "type", "quality", "stackNum"];
+			
 			[Bindable]
 			private var _listData:ArrayCollection = new ArrayCollection([]);
+			[Bindable]
+			private var _crtEditData:Object = {};
 			
 			private var _addItemWnd:AddItemWnd;
 			
@@ -68,8 +76,10 @@
 				if(itemList){
 					if(itemList.dataProvider.length <= 0){
 						infoContent.visible = false;
+						btnsGroup.visible = false;
 					}else{
 						infoContent.visible = true;
+						btnsGroup.visible = true;
 					}
 				}
 			}
@@ -90,18 +100,31 @@
 			{
 				// 当用程序直接指定数据变化的时候，触发此方法
 				flushInfoContent();
-				var obj:Object = event.currentTarget.selectedItem;
-				setInfo(obj);
+				_crtEditData = event.currentTarget.selectedItem;
+//				var obj:Object = event.currentTarget.selectedItem;
+//				setInfo(obj);
 			}
 			
 			protected function setInfo(obj:Object):void{
-				itemBaseInfo.showByObj(obj);
+//				itemBaseInfo.showByObj(obj);
 			}
 			
 			protected function btnImport_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
 				
+			}
+			
+			private function getObjStr():String{
+				// 先加入文件title头
+				var str:String = CSV_HEAD.join("|||");
+				str+= "\n";
+				// 再加入每一行的具体数据
+				return str;
+			}
+			protected function btnSaveCSV_clickHandler(event:MouseEvent):void
+			{
+				AppCfg.saveDBFile(KEY, getObjStr());
 			}
 			
 		]]>
@@ -115,16 +138,20 @@
 			itemRenderer="editor.item.ItemRender"></s:List>
 	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加物品"
 			  click="btnAddItem_clickHandler(event)"/>
-	<s:BorderContainer id="infoContent" left="160" top="0" right="10" bottom="10">
-		<item:ItemBaseInfo id="itemBaseInfo" left="10" right="355" top="10" bottom="300" backgroundColor="#DBEAEF"/>
-		<s:Button id="btnSave" right="10" bottom="10" label="保存" click="btnSave_clickHandler(event)"/>
-		<s:Button id="btnSaveJson" right="166" bottom="10" label="保存json"
-				  click="btnSaveJson_clickHandler(event)"/>
-		<s:Button id="btnImport" right="251" bottom="10" label="导入"
-				  click="btnImport_clickHandler(event)"/>
-		<s:Button id="btnDelete" right="88" bottom="10" label="删除"
-				  click="btnDelete_clickHandler(event)"/>
+	<s:BorderContainer id="infoContent" left="160" top="0" right="10" bottom="40">
+		<item:ItemBaseInfo id="itemBaseInfo" editObj="{_crtEditData}" left="10" right="355" top="10" bottom="300" backgroundColor="#DBEAEF"/>
+		
 	</s:BorderContainer>
+	
+	<s:HGroup id="btnsGroup" left="300" right="10" bottom="10" height="30" gap="6" horizontalAlign="right"
+			  verticalAlign="bottom">
+		<s:Button id="btnDelete" label="删除" click="btnDelete_clickHandler(event)"/>
+		<s:Button id="btnImport" label="导入" click="btnImport_clickHandler(event)"/>
+		<s:Button id="btnSave" label="保存" click="btnSave_clickHandler(event)"/>
+		<s:Button id="btnSaveJson" label="保存json" click="btnSaveJson_clickHandler(event)"/>
+		<s:Button id="btnSaveCSV" label="保存CSV" click="btnSaveCSV_clickHandler(event)"/>
+	</s:HGroup>
+	
 	<s:TextInput id="inputSearch" left="40" right="790" top="10" prompt="输入Tid或名字"/>
 	<s:Image x="10" y="10" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
 </s:NavigatorContent>

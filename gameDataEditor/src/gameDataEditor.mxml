@@ -14,8 +14,10 @@
 	<fx:Style source="gameDataEditor.css"/>
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
+			import mx.events.MenuEvent;
 			
 			/////////////////////// 以下变量区
 			

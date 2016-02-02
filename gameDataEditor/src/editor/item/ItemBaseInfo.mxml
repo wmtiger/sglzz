@@ -2,7 +2,7 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
-				   implements="editor.normal.IDataIO"
+				   implements="editor.normal.IDataShow"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
 	<fx:Script>
 		<![CDATA[
@@ -24,22 +24,9 @@
 			//-------------------
 			
 			
-			protected function boxStack_changeHandler(event:IndexChangeEvent):void
-			{
-				var obj:Object = boxStack.selectedItem;
-				if(obj){
-					if(obj["value"] == 0){
-						inputStackMax.text = "1";
-					}else{
-						inputStackMax.text = "99";
-					}
-				}
-			}
-			
 			protected function boxItemType_changeHandler(event:IndexChangeEvent):void
 			{
 				// TODO Auto-generated method stub
-//				ComboBoxUtil
 			}
 			
 			protected function boxItemQuality_changeHandler(event:IndexChangeEvent):void
@@ -48,16 +35,23 @@
 			}
 			
 			//----------------------
-			// 实现接口 IDataIO
+			// 实现接口 IDataShow
 			//----------------------
 			
-			public function saveToFile():void{
+			public function set editObj(obj:Object):void{
+				this.clear();
 				
-			}
-			
-			public function showByObj(obj:Object):void{
 				this.inputTid.text = "" + obj.templateId;
 				this.inputName.text = "" + obj.name;
+			}
+			
+			public function clear():void{
+				this.inputTid.text = "";
+				this.inputName.text = "";
+				this.boxItemType.selectedIndex = 0;
+				this.boxItemQuality.selectedIndex = 0;
+				this.imgItem.source = null;
+				this.inputIntro.text = "";
 			}
 			
 		]]>
@@ -68,26 +62,23 @@
 	<s:Label x="5" y="5" text="基本信息"/>
 	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
 	<s:TextInput id="inputTid" x="32" y="25" width="107"/>
-	<s:TextInput id="inputImage" x="42" y="57" width="97"/>
+	<s:TextInput id="inputImage" x="42" y="90" width="97"/>
 	<s:Label x="147" y="30" text="名字"/>
 	<s:TextInput id="inputName" x="185" y="25" width="120"/>
-	<s:Label x="238" y="163" text="堆叠"/>
-	<s:ComboBox id="boxStack" x="274" y="159" width="65" change="boxStack_changeHandler(event)"
-				dataProvider="{_boxStackData}" itemRenderer="editor.normal.BoxNormalRender"
-				selectedIndex="0" labelFunction="ComboBoxUtil.getBoxFullValue"/>
-	<s:TextInput id="inputStackMax" x="343" y="158" width="50" text="99"/>
-	<s:Label x="5" y="163" text="类型"/>
-	<s:ComboBox id="boxItemType" x="40" y="159" width="85" change="boxItemType_changeHandler(event)"
+	<s:Label x="238" y="63" text="堆叠"/>
+	<s:TextInput id="inputStackMax" x="273" y="58" width="50" text="99"/>
+	<s:Label x="5" y="63" text="类型"/>
+	<s:ComboBox id="boxItemType" x="40" y="59" width="85" change="boxItemType_changeHandler(event)"
 				dataProvider="{_boxItemTypeData}" itemRenderer="editor.normal.BoxNormalRender"
 				selectedIndex="0" labelFunction="ComboBoxUtil.getBoxFullValue"/>
-	<s:Label x="132" y="163" text="品质"/>
-	<s:ComboBox id="boxItemQuality" x="167" y="159" width="65" labelFunction="ComboBoxUtil.getBoxFullValue"
+	<s:Label x="132" y="63" text="品质"/>
+	<s:ComboBox id="boxItemQuality" x="167" y="59" width="65" labelFunction="ComboBoxUtil.getBoxFullValue"
 				change="boxItemQuality_changeHandler(event)" dataProvider="{_boxQualityData}"
 				itemRenderer="editor.normal.BoxNormalRender" selectedIndex="0"/>
-	<s:Label x="5" y="62" text="图像"/>
-	<s:BorderContainer x="42" y="86" width="66" height="66">
+	<s:Label x="5" y="95" text="图像"/>
+	<s:BorderContainer x="42" y="119" width="66" height="66">
 		<s:Image id="imgItem" x="0" y="0" width="64" height="64"/>
 	</s:BorderContainer>
-	<s:Label x="147" y="62" text="简介"/>
-	<s:TextArea id="inputIntro" left="185" right="5" top="58" height="94"/>
+	<s:Label x="147" y="95" text="简介"/>
+	<s:TextArea id="inputIntro" left="185" right="5" top="91" height="94"/>
 </s:BorderContainer>
