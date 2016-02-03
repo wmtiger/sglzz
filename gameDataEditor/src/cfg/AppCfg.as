@@ -6,63 +6,56 @@ package cfg
 	import flash.filesystem.FileStream;
 	
 	import mx.core.FlexGlobals;
-
+	
 	public class AppCfg
 	{
 		public function AppCfg()
 		{
 		}
 		
-		public static function getStage():Stage{
+		public static function getStage():Stage
+		{
 			return FlexGlobals.topLevelApplication.stage;
 		}
 		
-		/**
-		 * 获取指定的库文件
-		 * @param dbName
-		 * @return 
-		 */		
-		public static function getAsdDBFile(dbName:String, suffix:String = ".db"):File{
-			var f:File = getDBDir();
-			if(f != null){
-				var db:File = f.resolvePath(dbName+suffix);
-				if(db.exists){
-					return db;
-				}
-			}
-			return null;
-		}
-		
-		public static function getASDir():File{
+		public static function getASDir():File
+		{
 			var f:File = File.applicationStorageDirectory;
-			if(f.exists){
+			if (f.exists)
+			{
 				return f;
 			}
 			return null;
 		}
 		
-		public static function getDBDir():File{
+		public static function getDBFileData(dbName:String, suffix:String = ".csv"):String
+		{
 			var f:File = getASDir();
 			var db:File;
-			if(f != null){
-				db = f.resolvePath("dbs");
-				if(db.exists){
-					return db;
-				}
+			var str:String = "";
+			if (f != null)
+			{
+				db = f.resolvePath("dbs/" + dbName + suffix);
+				var fs:FileStream = new FileStream();
+				fs.open(db, FileMode.READ);
+				str = fs.readUTFBytes(fs.bytesAvailable);
+				fs.close();
 			}
-			return null;
+			return str;
 		}
 		
-		public static function saveDBFile(dbName:String, data:String, suffix:String = ".db"):void{
+		public static function saveDBFile(dbName:String, data:String, suffix:String = ".csv"):void
+		{
 			var f:File = getASDir();
 			var db:File;
-			if(f != null){
-				db = f.resolvePath("dbs"+"/"+dbName+suffix);
+			if (f != null)
+			{
+				db = f.resolvePath("dbs/" + dbName + suffix);
 				var fs:FileStream = new FileStream();
-				fs.open(db,FileMode.WRITE);
+				fs.open(db, FileMode.WRITE);
 				fs.writeUTFBytes(data);
 				fs.close();
-				trace("save "+dbName+suffix + " over!");
+				trace("save " + dbName + suffix + " over!");
 			}
 		}
 	}
