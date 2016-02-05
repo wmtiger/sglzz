@@ -36,6 +36,9 @@ package cfg
 			if (f != null)
 			{
 				db = f.resolvePath("dbs/" + dbName + suffix);
+				if(!db.exists){
+					return null;
+				}
 				var fs:FileStream = new FileStream();
 				fs.open(db, FileMode.READ);
 				str = fs.readUTFBytes(fs.bytesAvailable);

@@ -67,6 +67,9 @@ package editor.utils
 		 */
 		public static function parseCsvToList(csv:String):Array
 		{
+			if(!csv){
+				return [];
+			}
 			var csvList:Array = csv.split(ROW_SPAN_STR);
 			var objList:Array = [];
 			var titleList:Array = [];

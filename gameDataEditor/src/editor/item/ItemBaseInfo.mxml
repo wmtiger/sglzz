@@ -11,35 +11,26 @@
 			import mx.collections.ArrayCollection;
 			
 			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
 			
 			//-------------------
 			// 变量定义区
-			[Bindable]
-			private var _boxStackData:ArrayCollection = new ArrayCollection([{value:1, name:"是"}, {value:0, name:"否"}]);
 			[Bindable]
 			private var _boxQualityData:ArrayCollection = new ArrayCollection([{value:0, name:"白"}, {value:1, name:"绿"}, {value:2, name:"蓝"}, {value:3, name:"紫"}, {value:4, name:"橙"}]);
 			[Bindable]
 			private var _boxItemTypeData:ArrayCollection = new ArrayCollection([{value:1, name:"道具"}, {value:2, name:"材料"}, {value:3, name:"箱子"}]);
 			
+			private var _crtData:Object;
+			
 			//-------------------
 			
 			
-			protected function boxItemType_changeHandler(event:IndexChangeEvent):void
-			{
-				// TODO Auto-generated method stub
-			}
-			
-			protected function boxItemQuality_changeHandler(event:IndexChangeEvent):void
-			{
-				
-			}
-			
 			//----------------------
 			// 实现接口 IDataShow
-			//----------------------
 			
 			public function set editObj(obj:Object):void{
 				this.clear();
+				_crtData = obj;
 				
 				this.inputTid.text = "" + obj.templateId;
 				this.inputName.text = "" + obj.name;
@@ -54,6 +45,31 @@
 				this.inputIntro.text = "";
 			}
 			
+			//----------------------
+			
+			protected function reflushData():void{
+				_crtData.templateId = this.inputTid.text + "";
+				_crtData.name = this.inputName.text + "";
+//				_crtData.name = this.inputName.text + "";
+//				_crtData.name = this.inputName.text + "";
+			}
+			
+			protected function boxItemType_changeHandler(event:IndexChangeEvent):void
+			{
+				
+			}
+			
+			protected function boxItemQuality_changeHandler(event:IndexChangeEvent):void
+			{
+				
+			}
+			
+			protected function inputTid_changeHandler(event:TextOperationEvent):void
+			{
+				reflushData();
+			}
+			
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -61,7 +77,7 @@
 	</fx:Declarations>
 	<s:Label x="5" y="5" text="基本信息"/>
 	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
-	<s:TextInput id="inputTid" x="32" y="25" width="107"/>
+	<s:TextInput id="inputTid" x="32" y="25" width="107" change="inputTid_changeHandler(event)"/>
 	<s:TextInput id="inputImage" x="42" y="90" width="97"/>
 	<s:Label x="147" y="30" text="名字"/>
 	<s:TextInput id="inputName" x="185" y="25" width="120"/>
