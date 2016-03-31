@@ -23,5 +23,5 @@
 	</fx:Declarations>
 	<s:Label x="5" y="5" text="武将技能信息"/>
 	<s:List id="heroSkillList" left="5" right="5" top="25" bottom="5"
-			itemRenderer="editor.hero.HeroSkillRender"></s:List>
+			itemRenderer="editor.dataeditor.hero.HeroSkillRender"></s:List>
 </s:BorderContainer>

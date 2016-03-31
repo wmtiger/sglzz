@@ -2,18 +2,20 @@
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
-					   xmlns:hero="editor.hero.*"
-					   xmlns:skill="editor.skill.*"
-					   xmlns:herosoul="editor.herosoul.*"
-					   xmlns:item="editor.item.*"
-					   xmlns:equip="editor.equip.*"
-					   width="960" height="720"
+					   xmlns:hero="editor.dataeditor.hero.*"
+					   xmlns:skill="editor.dataeditor.skill.*"
+					   xmlns:herosoul="editor.dataeditor.herosoul.*"
+					   xmlns:item="editor.dataeditor.item.*"
+					   xmlns:equip="editor.dataeditor.equip.*"
+					   width="960" height="750"
 					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
 					   closing="windowedapplication1_closingHandler(event)"
 					   fontFamily="微软雅黑" fontSize="15">
 	<fx:Style source="gameDataEditor.css"/>
 	<fx:Script>
 		<![CDATA[
+			import cfg.AppCfg;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
@@ -47,16 +49,47 @@
 				
 			}
 			
+			protected function menubar1_changeHandler(event:MenuEvent):void
+			{
+				if(event.label == "关于编辑器"){
+					Alert.show("当前版本\nv"+AppCfg.version, "关于",4);
+				}else if(event.label == "全部保存"){
+					
+				}else if(event.label == "全部另存为JSON"){
+					
+				}else if(event.label == "全部另存为二进制"){
+					
+				}else if(event.label == "设置"){
+					
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<fx:XMLList id="menuBar">
+			<menuitem label="文件">
+				<menuitem label="全部保存"/>
+				<menuitem label="全部另存为JSON"/>
+				<menuitem label="" type="separator"/>
+				<menuitem label="全部另存为二进制"/>
+			</menuitem>
+			<menuitem label="工具">
+				<menuitem label="设置"/>
+			</menuitem>
+			<menuitem label="帮助">
+				<menuitem label="关于编辑器"/>
+			</menuitem>
+		</fx:XMLList>
 	</fx:Declarations>
-	<mx:TabNavigator left="10" right="10" top="10" bottom="10">
+	<mx:TabNavigator left="10" right="10" top="40" bottom="10">
 		<hero:HeroNavContent id="heroContent" width="100%" height="100%" label="武将" />
 		<herosoul:HeroSoulNavContent id="heroSoulContent" width="100%" height="100%" label="将魂" />
 		<skill:SkillNavContent id="skillContent" width="100%" height="100%" label="技能" />
 		<item:ItemNavContent id="itemContent" width="100%" height="100%" label="物品" />
 		<equip:EquipNavContent width="100%" height="100%" label="装备" />
 	</mx:TabNavigator>
+	<mx:MenuBar left="0" right="0" top="0" height="30" change="menubar1_changeHandler(event)"
+				dataProvider="{menuBar}" labelField="@label"></mx:MenuBar>
 </s:WindowedApplication>

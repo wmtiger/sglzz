@@ -3,7 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					fontFamily="微软雅黑" fontSize="15" 
 					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:item="editor.item.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:item="editor.dataeditor.item.*">
 	<fx:Script>
 		<![CDATA[
 			import cfg.AppCfg;
@@ -11,6 +11,7 @@
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
 			import editor.utils.CSVUtil;
+			import editor.utils.FileUtil;
 			
 			import mx.collections.ArrayCollection;
 			import mx.core.FlexGlobals;
@@ -39,7 +40,7 @@
 			{
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_ITEM, onAddOneItem);
 				
-				var list:Array = CSVUtil.parseCsvToList(AppCfg.getDBFileData(KEY));
+				var list:Array = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
 				_listData.source = list;
 				
 			}
@@ -123,7 +124,7 @@
 			protected function btnSaveCSV_clickHandler(event:MouseEvent):void
 			{
 				var csv:String = CSVUtil.parseObjListToCsv(itemList.dataProvider.toArray(), CSV_HEAD);
-				AppCfg.saveDBFile(KEY, csv);
+				FileUtil.saveDBFile(KEY, csv);
 			}
 			
 		]]>
@@ -134,7 +135,7 @@
 	<s:List id="itemList" left="10" top="40" bottom="40" width="140" change="itemList_changeHandler(event)"
 			valueCommit="itemList_valueCommitHandler(event)" alternatingItemColors="[0xffffff,0xdfdfdf]"
 			addedToStage="itemList_addedToStageHandler(event)" dataProvider="{_listData}" selectedIndex="0"
-			itemRenderer="editor.item.ItemRender"></s:List>
+			itemRenderer="editor.dataeditor.item.ItemRender"></s:List>
 	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加物品"
 			  click="btnAddItem_clickHandler(event)"/>
 	<s:BorderContainer id="infoContent" left="160" top="0" right="10" bottom="40">

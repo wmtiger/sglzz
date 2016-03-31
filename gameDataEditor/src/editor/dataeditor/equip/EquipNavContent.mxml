@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:equip="editor.equip.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:equip="editor.dataeditor.equip.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -17,7 +17,7 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:List id="itemList" left="10" top="0" bottom="40" width="140"
-			itemRenderer="editor.item.ItemRender"></s:List>
+			itemRenderer="editor.dataeditor.item.ItemRender"></s:List>
 	<s:Button id="btnAddItem" left="10" bottom="10" width="140" label="增加装备"
 			  click="btnAddItem_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">

@@ -85,7 +85,7 @@ package editor.utils
 				var obj:Object = { };
 				for (var j:int = 0; j < titleLen; j++) 
 				{
-					if(arr[j] == "-"){
+					if(arr[j] == NULL_PLACE_HOLDER){
 						obj[titleList[j]] = "";
 					}else{
 						obj[titleList[j]] = arr[j];
