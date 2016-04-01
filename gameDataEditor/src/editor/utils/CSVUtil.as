@@ -82,23 +82,28 @@ package editor.utils
 			for (var i:int = 0; i < len; i++) 
 			{
 				var arr:Array = parseCsvRowToList(csvList[i]);
-				var obj:Object = { };
-				for (var j:int = 0; j < titleLen; j++) 
-				{
-					if(arr[j] == NULL_PLACE_HOLDER){
-						obj[titleList[j]] = "";
-					}else{
-						obj[titleList[j]] = arr[j];
+				if(arr.length > 0){
+					var obj:Object = { };
+					for (var j:int = 0; j < titleLen; j++) 
+					{
+						if(arr[j] == NULL_PLACE_HOLDER){
+							obj[titleList[j]] = "";
+						}else{
+							obj[titleList[j]] = arr[j];
+						}
 					}
+					objList[i] = obj;
 				}
-				objList[i] = obj;
 			}
 			return objList;
 		}
 		
 		public static function parseCsvRowToList(csvRow:String):Array
 		{
-			var list:Array = csvRow.split(COL_SPAN_STR);
+			var list:Array = [];
+			if(csvRow){
+				list = csvRow.split(COL_SPAN_STR);
+			}
 			return list;
 		}
 		

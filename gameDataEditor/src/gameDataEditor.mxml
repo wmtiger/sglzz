@@ -16,14 +16,19 @@
 		<![CDATA[
 			import cfg.AppCfg;
 			
+			import editor.setting.PathSettingWnd;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.events.MenuEvent;
+			import mx.managers.PopUpManager;
 			
 			/////////////////////// 以下变量区
 			
 //			private const tabNames:ArrayCollection = new ArrayCollection(["武将", "将魂", "技能", "物品", "状态", "副本", "公共事件", "系统", "用语"]);
+			
+			private var _settingWnd:PathSettingWnd;
 			
 			/////////////////////// 以上变量区
 			
@@ -55,13 +60,23 @@
 					Alert.show("当前版本\nv"+AppCfg.version, "关于",4);
 				}else if(event.label == "全部保存"){
 					
+				}else if(event.label == "全部另存为CSV"){
+					saveAllCsv();
 				}else if(event.label == "全部另存为JSON"){
 					
 				}else if(event.label == "全部另存为二进制"){
 					
 				}else if(event.label == "设置"){
-					
+					if(_settingWnd == null){
+						_settingWnd = new PathSettingWnd();
+					}
+					PopUpManager.addPopUp(_settingWnd, AppCfg.getTopLevel(), true);
 				}
+			}
+			
+			private function saveAllCsv():void
+			{
+				heroContent.saveHeroDataToCsv();
 			}
 			
 		]]>
@@ -71,6 +86,7 @@
 		<fx:XMLList id="menuBar">
 			<menuitem label="文件">
 				<menuitem label="全部保存"/>
+				<menuitem label="全部另存为CSV"/>
 				<menuitem label="全部另存为JSON"/>
 				<menuitem label="" type="separator"/>
 				<menuitem label="全部另存为二进制"/>

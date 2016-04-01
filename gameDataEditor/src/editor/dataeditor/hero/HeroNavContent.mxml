@@ -7,18 +7,88 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import cfg.AppCfg;
+			
+			import editor.evt.EditEvt;
+			import editor.evt.EvtMgr;
+			import editor.utils.CSVUtil;
+			import editor.utils.FileUtil;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			/////////////////////// 以下变量区
+			public static const KEY:String = "hero";
+			public static const CSV_HEAD:Array = ["templateId", "name", "atkType", "quality", "headImg"];
+			
+			[Bindable]
+			private var _heroListData:ArrayCollection = new ArrayCollection();
+			
+			private var _heroListTotalData:Array = [];
+			private var _searchTempList:Array = [];// 搜索的时候的临时用列表
+			
+			private var _crtEditObj:Object;// 当前正在修改的
+			
+			private var _addHeroWnd:AddHeroWnd;// 增加武将界面
+			
+			/////////////////////// 以上变量区
+			
 			protected function btnAddHero_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub
-				
+				if(_addHeroWnd == null){
+					_addHeroWnd = new AddHeroWnd();
+				}
+				PopUpManager.addPopUp(_addHeroWnd, AppCfg.getTopLevel(), true);
 			}
 			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
+				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
 				
-				heroList.dataProvider = new ArrayCollection([{templateId:10001, name:"吕布"},{templateId:10002, name:"关羽"}]);
+				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
+				_heroListData.source = getFilterHeroArr(_heroListTotalData);
+//				heroList.dataProvider = new ArrayCollection([{templateId:10001, name:"吕布"},{templateId:10002, name:"关羽"}]);
+			}
+			
+			protected function onAddOneHero(event:EditEvt):void
+			{
+				inputSearch.text = "";
+				_heroListTotalData.push(event.data);
+				_heroListData.source = getFilterHeroArr(_heroListTotalData);
+				heroList.selectedItem = event.data;
+				
+			}
+			
+			protected function getFilterHeroArr(needFilterArr:Array):Array
+			{
+				var tempArr:Array = [];
+				var len:int = needFilterArr.length;
+				var i:int = 0;
+				var obj:Object;
+				var searchStr:String = inputSearch.text + "";
+				if(int(searchStr) > 0){
+					// 输入的是数字
+					for(i = 0; i < len; i++){
+						obj = needFilterArr[i];
+						if(String(obj.templateId).indexOf(searchStr) >= 0){
+							tempArr.push(obj);
+						}
+					}
+				}else{
+					// 输入的是其他文字
+					for(i = 0; i < len; i++){
+						obj = needFilterArr[i];
+						if(String(obj.name).indexOf(searchStr) >= 0){
+							tempArr.push(obj);
+						}
+					}
+				}
+				_searchTempList = tempArr;
+				return tempArr;
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -27,14 +97,35 @@
 				
 			}
 			
+			protected function inputSearch_changeHandler(event:TextOperationEvent):void
+			{
+				if(inputSearch.text == ""){
+					_heroListData.source = getFilterHeroArr(_heroListTotalData);
+				}else{
+					_heroListData.source = getFilterHeroArr(_searchTempList);
+				}
+			}
+			
+			public function saveHeroDataToCsv():void
+			{
+				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,CSV_HEAD);
+				FileUtil.saveDBFile(KEY, csv);
+			}
+			
+			protected function heroList_changeHandler(event:IndexChangeEvent):void
+			{
+				_crtEditObj = heroList.selectedItem;
+			}
+			
 		]]>
 	</fx:Script>
 	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:List id="heroList" left="10" top="0" bottom="40" width="140" alternatingItemColors="[0xffffff,0xdfdfdf]"
-			itemRenderer="editor.dataeditor.hero.HeroRender"></s:List>
+	<s:List id="heroList" left="10" top="35" bottom="40" width="140"
+			alternatingItemColors="[0xffffff,0xdfdfdf]" change="heroList_changeHandler(event)"
+			dataProvider="{_heroListData}" itemRenderer="editor.dataeditor.hero.HeroRender"></s:List>
 	<s:Button id="btnAddHero" left="10" bottom="10" width="140" label="增加武将"
 			  click="btnAddHero_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">
@@ -49,4 +140,7 @@
 		<s:Button id="btnDelete" right="10" bottom="10" label="删除"
 				  click="btnDelete_clickHandler(event)"/>
 	</s:BorderContainer>
+	<s:TextInput id="inputSearch" left="40" right="790" top="0"
+				 change="inputSearch_changeHandler(event)" prompt="输入Tid或名字"/>
+	<s:Image x="10" y="0" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
 </s:NavigatorContent>

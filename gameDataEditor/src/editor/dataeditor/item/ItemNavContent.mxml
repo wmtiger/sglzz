@@ -40,9 +40,9 @@
 			{
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_ITEM, onAddOneItem);
 				
-				var list:Array = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
-				_listData.source = list;
-				
+//				var list:Array = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
+//				_listData.source = list;
+				// todo 这里要修改的
 			}
 			
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
@@ -124,7 +124,7 @@
 			protected function btnSaveCSV_clickHandler(event:MouseEvent):void
 			{
 				var csv:String = CSVUtil.parseObjListToCsv(itemList.dataProvider.toArray(), CSV_HEAD);
-				FileUtil.saveDBFile(KEY, csv);
+//				FileUtil.saveDBFile(KEY, csv);
 			}
 			
 		]]>
@@ -152,6 +152,6 @@
 		<s:Button id="btnSaveCSV" label="保存CSV" click="btnSaveCSV_clickHandler(event)"/>
 	</s:HGroup>
 	
-	<s:TextInput id="inputSearch" left="40" right="790" top="10" prompt="输入Tid或名字"/>
-	<s:Image x="10" y="10" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
+	<s:TextInput id="inputSearch" left="40" right="790" top="5" prompt="输入Tid或名字"/>
+	<s:Image x="10" y="5" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
 </s:NavigatorContent>

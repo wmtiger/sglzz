@@ -1,6 +1,7 @@
 package cfg
 {
 	import flash.desktop.NativeApplication;
+	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -12,6 +13,14 @@ package cfg
 	{
 		public function AppCfg()
 		{
+		}
+		
+		/**
+		 * 获取本app的顶层显示
+		 */
+		public static function getTopLevel():DisplayObject
+		{
+			return FlexGlobals.topLevelApplication as DisplayObject;
 		}
 		
 		/**

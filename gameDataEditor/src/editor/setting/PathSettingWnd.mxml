@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   close="titlewindow1_closeHandler(event)"
+			   creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+			   width="600" height="300" fontFamily="微软雅黑" fontSize="15" title="设置">
+	
+	<fx:Script>
+		<![CDATA[
+			import cfg.AppCfg;
+			
+			import editor.utils.FileUtil;
+			
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			protected function btnOk_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				FileUtil.saveSettingFileObj(getSettingObj());
+				PopUpManager.removePopUp(this);
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			protected function btnSelectRoot_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnSelectJson_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnSelectBin_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnSelectCsv_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function dropFile(event:NativeDragEvent):void
+			{
+				var clip:Clipboard = event.clipboard;
+				if(clip.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+				{
+					var arr:Array = clip.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					var file:File = arr[0] as File;
+					if(file.isDirectory)
+					{
+						var filePath:String = file.nativePath;
+						(event.currentTarget as TextInput).text = filePath;
+					}
+				}
+			}
+			
+			protected function titlewindow1_closeHandler(event:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.x = AppCfg.getStage().stageWidth/2- this.width/2;
+				this.y = AppCfg.getStage().stageHeight/2- this.height/2;
+				
+				// 这里读取设置过的文件
+				var obj:Object = FileUtil.getSettingFileObj();
+				if(obj){
+					inputRootDir.text = obj.root ? obj.root + "" : "";
+					inputExportDir.text = obj.json ? obj.json + "" : "";
+					inputExportDir2.text = obj.bin ? obj.bin + "" : "";
+					inputExportDir3.text = obj.csv ? obj.csv + "" : "";
+				}else{
+					inputRootDir.text = "";
+					inputExportDir.text = "";
+					inputExportDir2.text = "";
+					inputExportDir3.text = "";
+				}
+			}
+			
+			protected function dragEnter(event:NativeDragEvent):void
+			{
+				var clip:Clipboard = event.clipboard;
+				if(clip.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+				{
+					var arr:Array = clip.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+				}
+				NativeDragManager.acceptDragDrop((event.currentTarget as TextInput));
+			}
+			
+			protected function getSettingObj():Object
+			{
+				var obj:Object = {};
+				obj["json"] = ""+inputExportDir.text;
+				obj["bin"] = ""+inputExportDir2.text;
+				obj["csv"] = ""+inputExportDir3.text;
+				obj["root"] = ""+inputRootDir.text;
+				return obj;
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Button id="btnSelectRoot" right="10" top="10" height="30" label="选择目录"
+			  click="btnSelectRoot_clickHandler(event)"/>
+	<s:Button id="btnSelectJson" right="10" top="50" height="30" label="选择目录"
+			  click="btnSelectJson_clickHandler(event)"/>
+	<s:Button id="btnSelectBin" right="10" top="90" height="30" label="选择目录"
+			  click="btnSelectBin_clickHandler(event)"/>
+	<s:Button id="btnSelectCsv" right="10" top="130" height="30" label="选择目录"
+			  click="btnSelectCsv_clickHandler(event)"/>
+	<s:Button id="btnOk" right="10" bottom="10" height="30" label="确定"
+			  click="btnOk_clickHandler(event)"/>
+	<s:Button id="btnCancel" right="90" bottom="10" height="30" label="取消"
+			  click="btnCancel_clickHandler(event)"/>
+	<s:TextInput id="inputExportDir2" left="10" right="98" top="90" height="30"
+				 nativeDragDrop="dropFile(event)"
+				 nativeDragEnter="dragEnter(event)"
+				 prompt="输入或将本地数据的二进制导出目录拖进此处"/>
+	<s:TextInput id="inputRootDir" left="10" right="98" top="10" height="30"
+				 nativeDragDrop="dropFile(event)"
+				 nativeDragEnter="dragEnter(event)"
+				 prompt="输入或将本地数据的根目录拖进此处"/>
+	<s:TextInput id="inputExportDir" left="10" right="98" top="50" height="30"
+				 nativeDragDrop="dropFile(event)"
+				 nativeDragEnter="dragEnter(event)"
+				 prompt="输入或将本地数据的JSON导出目录拖进此处"/>
+	<s:TextInput id="inputExportDir3" left="10" right="98" top="130" height="30"
+				 nativeDragDrop="dropFile(event)"
+				 nativeDragEnter="dragEnter(event)"
+				 prompt="输入或将本地数据的CSV导出目录拖进此处"/>
+</s:TitleWindow>

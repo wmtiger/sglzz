@@ -10,9 +10,10 @@
 			
 			protected function resetData(event:FlexEvent):void
 			{
-				if(data){
+				if(data && data.templateId){
 					labName.text = data.templateId + ": " + data.name;
-					
+				}else{
+					labName.text = "";
 				}
 			}
 			
