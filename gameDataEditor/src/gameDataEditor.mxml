@@ -17,6 +17,7 @@
 			import cfg.AppCfg;
 			
 			import editor.setting.PathSettingWnd;
+			import editor.utils.FileUtil;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -34,7 +35,18 @@
 			
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
-				
+				if(!FileUtil.hasSettingFileObj()){
+					// 如果没有设置过存储路径，跳出提示
+					Alert.show("你还没有设置存储路径，请设置后再进行使用。","提示",4|8,this,onChkSettingHandler,null,4|8);
+				}
+			}
+			
+			protected function onChkSettingHandler(event:Event):void{
+				if(event["detail"] == 4){
+					openSettingWnd();
+				}else{
+					
+				}
 			}
 			
 			protected function windowedapplication1_closingHandler(event:Event):void
@@ -67,11 +79,16 @@
 				}else if(event.label == "全部另存为二进制"){
 					
 				}else if(event.label == "设置"){
-					if(_settingWnd == null){
-						_settingWnd = new PathSettingWnd();
-					}
-					PopUpManager.addPopUp(_settingWnd, AppCfg.getTopLevel(), true);
+					openSettingWnd();
 				}
+			}
+			
+			private function openSettingWnd():void
+			{
+				if(_settingWnd == null){
+					_settingWnd = new PathSettingWnd();
+				}
+				PopUpManager.addPopUp(_settingWnd, AppCfg.getTopLevel(), true);
 			}
 			
 			private function saveAllCsv():void

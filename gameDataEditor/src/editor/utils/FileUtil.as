@@ -44,6 +44,22 @@ package editor.utils
 				trace("当前路径设置保存完毕");
 			}
 		}
+		
+		public static function hasSettingFileObj():Boolean
+		{
+			var f:File = getASDir();
+			var db:File;
+			if (f != null)
+			{
+				db = f.resolvePath("setting/pathcfg.set");
+				if(!db.exists){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			return false;
+		}
 		/**
 		 * 获取设置的文件
 		 * @return 
@@ -99,17 +115,20 @@ package editor.utils
 		public static function getDBFileData(dbName:String, fileType:int = FILE_TYPE_CSV):String
 		{
 			var suffix:String = FILE_SUFFIXS[fileType];
-			var f:File = new File(getSettingRootPath(fileType));
-			var db:File;
 			var str:String = "";
-			if (f != null)
-			{
-				db = f.resolvePath(dbName + suffix);
-				if(db.exists){
-					var fs:FileStream = new FileStream();
-					fs.open(db, FileMode.READ);
-					str = fs.readUTFBytes(fs.bytesAvailable);
-					fs.close();
+			var rootPath:String = getSettingRootPath(fileType);
+			if(rootPath != ""){
+				var f:File = new File(rootPath);
+				var db:File;
+				if (f != null)
+				{
+					db = f.resolvePath(dbName + suffix);
+					if(db.exists){
+						var fs:FileStream = new FileStream();
+						fs.open(db, FileMode.READ);
+						str = fs.readUTFBytes(fs.bytesAvailable);
+						fs.close();
+					}
 				}
 			}
 			return str;
@@ -124,16 +143,19 @@ package editor.utils
 		public static function saveDBFile(dbName:String, data:String, fileType:int = FILE_TYPE_CSV):void
 		{
 			var suffix:String = FILE_SUFFIXS[fileType];
-			var f:File = new File(getSettingRootPath(fileType));
-			var db:File;
-			if (f != null)
-			{
-				db = f.resolvePath(dbName + suffix);
-				var fs:FileStream = new FileStream();
-				fs.open(db, FileMode.WRITE);
-				fs.writeUTFBytes(data);
-				fs.close();
-				trace("save " + dbName + suffix + " over!");
+			var rootPath:String = getSettingRootPath(fileType);
+			if(rootPath != ""){
+				var f:File = new File(rootPath);
+				var db:File;
+				if (f != null)
+				{
+					db = f.resolvePath(dbName + suffix);
+					var fs:FileStream = new FileStream();
+					fs.open(db, FileMode.WRITE);
+					fs.writeUTFBytes(data);
+					fs.close();
+					trace("save " + dbName + suffix + " over!");
+				}
 			}
 		}
 	}
