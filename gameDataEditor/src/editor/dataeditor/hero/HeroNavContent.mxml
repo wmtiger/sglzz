@@ -14,6 +14,8 @@
 			import editor.utils.CSVUtil;
 			import editor.utils.FileUtil;
 			
+			import flash.utils.setTimeout;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
@@ -102,8 +104,12 @@
 				if(inputSearch.text == ""){
 					_heroListData.source = getFilterHeroArr(_heroListTotalData);
 				}else{
-					_heroListData.source = getFilterHeroArr(_searchTempList);
+					setTimeout(delayFilterHeroArr,500);
 				}
+			}
+			private function delayFilterHeroArr():void
+			{
+				_heroListData.source = getFilterHeroArr(_searchTempList);
 			}
 			
 			public function saveHeroDataToCsv():void

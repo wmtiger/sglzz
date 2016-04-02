@@ -37,16 +37,12 @@
 			{
 				if(!FileUtil.hasSettingFileObj()){
 					// 如果没有设置过存储路径，跳出提示
-					Alert.show("你还没有设置存储路径，请设置后再进行使用。","提示",4|8,this,onChkSettingHandler,null,4|8);
+					Alert.show("你还没有设置存储路径，请设置后再进行使用。","提示",4,this,onChkSettingHandler);
 				}
 			}
 			
 			protected function onChkSettingHandler(event:Event):void{
-				if(event["detail"] == 4){
-					openSettingWnd();
-				}else{
-					
-				}
+				openSettingWnd();
 			}
 			
 			protected function windowedapplication1_closingHandler(event:Event):void
