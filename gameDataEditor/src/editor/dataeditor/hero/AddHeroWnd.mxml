@@ -58,7 +58,7 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Label x="10" y="15" text="Tid" verticalAlign="middle"/>
-	<s:TextInput id="inputTid" x="37" y="10" width="107" prompt="10001"/>
+	<s:TextInput id="inputTid" restrict="0-9" x="37" y="10" width="107" prompt="10001"/>
 	<s:Label x="152" y="15" text="名字"/>
 	<s:TextInput id="inputName" x="190" y="10" width="120" prompt="武将名字"/>
 	<s:Button id="btnAdd" right="10" bottom="10" label="确认增加" click="btnAdd_clickHandler(event)"/>

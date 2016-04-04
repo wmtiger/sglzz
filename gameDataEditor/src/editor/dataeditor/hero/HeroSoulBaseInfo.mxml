@@ -2,28 +2,113 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
+				   implements="editor.normal.IDataShow"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import com.gamedata.template.HeroTemplate;
+			
+			import editor.utils.TemplateUtil;
+			
+			import spark.events.TextOperationEvent;
+			
+			//-------------------
+			// 变量定义区
+			
+			private var _crtData:Object;
+			
+			//-------------------
+			
+			//----------------------
+			// 实现接口 IDataShow
+			
+			public function set editObj(obj:Object):void{
+				this.clear();
+				_crtData = obj;
+				
+				if(obj == null){
+					return;
+				}
+				inputTongshuai.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_TONG_SHUAI);
+				inputNeizheng.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_NEI_ZHENG);
+				inputHp.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_HP);
+				inputCritPoint.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_CRIT_POINT);
+				inputAtkPoint.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_ATK_POINT);
+				inputSpeedPoint.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_SPEED_POINT);
+				inputDefPoint.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_DEF_POINT);
+				inputWuli.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_WU_LI);
+				inputZhili.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_ZHI_LI);
+			}
+			
+			public function clear():void{
+				inputTongshuai.text = "";
+				inputNeizheng.text = "";
+				inputHp.text = "";
+				inputCritPoint.text = "";
+				inputAtkPoint.text = "";
+				inputSpeedPoint.text = "";
+				inputDefPoint.text = "";
+				inputWuli.text = "";
+				inputZhili.text = "";
+			}
+			
+			//----------------------
+			
+			protected function changeInputData(propName:String, txt:String):void
+			{
+				if(_crtData[propName] + "" == txt){
+					return;
+				}
+				_crtData[propName] = txt;
+//				AppCfg.getTopLevel().heroContent.updateCrtHeroListData();
+			}
+			
+			protected function input_focusOutHandler(event:FocusEvent):void
+			{
+				if(event.currentTarget.id == "inputTongshuai"){
+					changeInputData(HeroTemplate.KEY_TONG_SHUAI, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputNeizheng"){
+					changeInputData(HeroTemplate.KEY_NEI_ZHENG, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputHp"){
+					changeInputData(HeroTemplate.KEY_HP, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputCritPoint"){
+					changeInputData(HeroTemplate.KEY_CRIT_POINT, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputAtkPoint"){
+					changeInputData(HeroTemplate.KEY_ATK_POINT, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputSpeedPoint"){
+					changeInputData(HeroTemplate.KEY_SPEED_POINT, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputDefPoint"){
+					changeInputData(HeroTemplate.KEY_DEF_POINT, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputWuli"){
+					changeInputData(HeroTemplate.KEY_WU_LI, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputZhili"){
+					changeInputData(HeroTemplate.KEY_ZHI_LI, event.currentTarget.text + "");
+				}
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Label x="5" y="5" text="武魂基本信息"/>
 	<s:Label x="5" y="30" text="统帅"/>
-	<s:TextInput id="inputTongshuai" x="42" y="25" width="70"/>
+	<s:TextInput id="inputTongshuai" x="42" y="25" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="60" text="内政"/>
-	<s:TextInput id="inputNeizheng" x="42" y="55" width="70"/>
+	<s:TextInput id="inputNeizheng" x="42" y="55" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="100" text="血量"/>
-	<s:TextInput id="inputHp" x="42" y="95" width="70"/>
+	<s:TextInput id="inputHp" x="42" y="95" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="130" text="暴击"/>
-	<s:TextInput id="inputCritPoint" x="42" y="125" width="70"/>
+	<s:TextInput id="inputCritPoint" x="42" y="125" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="125" y="100" text="攻击"/>
-	<s:TextInput id="inputAtkPoint" x="162" y="95" width="70"/>
+	<s:TextInput id="inputAtkPoint" x="162" y="95" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="125" y="130" text="速度"/>
-	<s:TextInput id="inputSpeedPoint" x="162" y="125" width="70"/>
+	<s:TextInput id="inputSpeedPoint" x="162" y="125" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="245" y="100" text="防御"/>
-	<s:TextInput id="inputDefPoint" x="282" y="95" width="70"/>
+	<s:TextInput id="inputDefPoint" x="282" y="95" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="125" y="30" text="武力"/>
-	<s:TextInput id="inputWuli" x="162" y="25" width="70"/>
+	<s:TextInput id="inputWuli" x="162" y="25" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="245" y="30" text="智力"/>
-	<s:TextInput id="inputZhili" x="282" y="25" width="70"/>
+	<s:TextInput id="inputZhili" x="282" y="25" width="70" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<mx:HRule x="0" y="88" width="100%"/>
 </s:BorderContainer>

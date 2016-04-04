@@ -18,9 +18,9 @@ package cfg
 		/**
 		 * 获取本app的顶层显示
 		 */
-		public static function getTopLevel():DisplayObject
+		public static function getTopLevel():gameDataEditor
 		{
-			return FlexGlobals.topLevelApplication as DisplayObject;
+			return FlexGlobals.topLevelApplication as gameDataEditor;
 		}
 		
 		/**

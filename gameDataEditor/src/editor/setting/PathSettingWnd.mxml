@@ -80,15 +80,17 @@
 				// 这里读取设置过的文件
 				var obj:Object = FileUtil.getSettingFileObj();
 				if(obj){
-					inputRootDir.text = obj.root ? obj.root + "" : "";
-					inputExportDir.text = obj.json ? obj.json + "" : "";
-					inputExportDir2.text = obj.bin ? obj.bin + "" : "";
-					inputExportDir3.text = obj.csv ? obj.csv + "" : "";
+					inputRootDir.text = obj[FileUtil.ROOT] ? obj[FileUtil.ROOT] + "" : "";
+					inputExportDir.text = obj[FileUtil.JSON] ? obj[FileUtil.JSON] + "" : "";
+					inputExportDir2.text = obj[FileUtil.BIN] ? obj[FileUtil.BIN] + "" : "";
+					inputExportDir3.text = obj[FileUtil.CSV] ? obj[FileUtil.CSV] + "" : "";
+					inputAssetsRoot.text = obj[FileUtil.ASSETS_ROOT] ? obj[FileUtil.ASSETS_ROOT] + "" : "";
 				}else{
 					inputRootDir.text = "";
 					inputExportDir.text = "";
 					inputExportDir2.text = "";
 					inputExportDir3.text = "";
+					inputAssetsRoot.text = "";
 				}
 			}
 			
@@ -105,13 +107,20 @@
 			protected function getSettingObj():Object
 			{
 				var obj:Object = {};
-				obj["json"] = ""+inputExportDir.text;
-				obj["bin"] = ""+inputExportDir2.text;
-				obj["csv"] = ""+inputExportDir3.text;
-				obj["root"] = ""+inputRootDir.text;
+				obj[FileUtil.JSON] = ""+inputExportDir.text;
+				obj[FileUtil.BIN] = ""+inputExportDir2.text;
+				obj[FileUtil.CSV] = ""+inputExportDir3.text;
+				obj[FileUtil.ROOT] = ""+inputRootDir.text;
+				obj[FileUtil.ASSETS_ROOT] = ""+inputAssetsRoot.text;
 				return obj;
 			}
 			
+			
+			protected function btnSelectAssetsRoot_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
 			
 		]]>
 	</fx:Script>
@@ -119,14 +128,20 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Button id="btnSelectRoot" right="10" top="10" height="30" label="选择目录"
+	<s:Button id="btnSelectRoot" right="10" top="170" height="30" label="选择目录"
 			  click="btnSelectRoot_clickHandler(event)"/>
-	<s:Button id="btnSelectJson" right="10" top="50" height="30" label="选择目录"
+	<s:Button id="btnSelectJson" right="10" top="130" height="30" label="选择目录"
 			  click="btnSelectJson_clickHandler(event)"/>
 	<s:Button id="btnSelectBin" right="10" top="90" height="30" label="选择目录"
 			  click="btnSelectBin_clickHandler(event)"/>
-	<s:Button id="btnSelectCsv" right="10" top="130" height="30" label="选择目录"
+	<s:Button id="btnSelectCsv" right="10" top="50" height="30" label="选择目录"
 			  click="btnSelectCsv_clickHandler(event)"/>
+	<s:Button id="btnSelectAssetsRoot" right="10" top="10" height="30" label="选择目录"
+			  click="btnSelectAssetsRoot_clickHandler(event)"/>
+	<s:TextInput id="inputAssetsRoot" left="10" right="98" top="10" height="30"
+				 nativeDragDrop="dropFile(event)"
+				 nativeDragEnter="dragEnter(event)"
+				 prompt="输入或将本地资源根目录拖进此处"/>
 	<s:Button id="btnOk" right="10" bottom="10" height="30" label="确定"
 			  click="btnOk_clickHandler(event)"/>
 	<s:Button id="btnCancel" right="90" bottom="10" height="30" label="取消"
@@ -135,15 +150,15 @@
 				 nativeDragDrop="dropFile(event)"
 				 nativeDragEnter="dragEnter(event)"
 				 prompt="输入或将本地数据的二进制导出目录拖进此处"/>
-	<s:TextInput id="inputRootDir" left="10" right="98" top="10" height="30"
+	<s:TextInput id="inputRootDir" left="10" right="98" top="170" height="30"
 				 nativeDragDrop="dropFile(event)"
 				 nativeDragEnter="dragEnter(event)"
 				 prompt="输入或将本地数据的根目录拖进此处"/>
-	<s:TextInput id="inputExportDir" left="10" right="98" top="50" height="30"
+	<s:TextInput id="inputExportDir" left="10" right="98" top="130" height="30"
 				 nativeDragDrop="dropFile(event)"
 				 nativeDragEnter="dragEnter(event)"
 				 prompt="输入或将本地数据的JSON导出目录拖进此处"/>
-	<s:TextInput id="inputExportDir3" left="10" right="98" top="130" height="30"
+	<s:TextInput id="inputExportDir3" left="10" right="98" top="50" height="30"
 				 nativeDragDrop="dropFile(event)"
 				 nativeDragEnter="dragEnter(event)"
 				 prompt="输入或将本地数据的CSV导出目录拖进此处"/>

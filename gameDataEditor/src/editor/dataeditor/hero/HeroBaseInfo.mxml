@@ -2,10 +2,78 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
+				   implements="editor.normal.IDataShow"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="390">
 	<fx:Script>
 		<![CDATA[
+			import cfg.AppCfg;
+			
+			import com.gamedata.template.HeroTemplate;
+			
+			import editor.utils.ComboBoxUtil;
+			import editor.utils.FileUtil;
+			import editor.utils.RepeatChkUtil;
+			import editor.utils.TemplateUtil;
+			
+			import mx.collections.ArrayCollection;
+			
 			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			//-------------------
+			// 变量定义区
+			[Bindable]
+			private var _boxQualityData:ArrayCollection = new ArrayCollection([{value:0, name:"白"}, {value:1, name:"绿"}, {value:2, name:"蓝"}, {value:3, name:"紫"}, {value:4, name:"橙"}]);
+			[Bindable]
+			private var _boxAtkTypeData:ArrayCollection = new ArrayCollection([{value:0, name:"物理"}, {value:1, name:"法术"}]);
+			
+			private var _crtData:Object;
+			
+			//-------------------
+			
+			//----------------------
+			// 实现接口 IDataShow
+			
+			public function set editObj(obj:Object):void{
+				this.clear();
+				_crtData = obj;
+				
+				if(obj == null){
+					return;
+				}
+				inputTid.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_TEMPLATE_ID);
+				inputName.text = TemplateUtil.getDataByObjKey(obj, HeroTemplate.KEY_NAME);
+				inputInitLevel.text = obj.initLevel ? obj.initLevel + "" : "";
+				inputMaxLevel.text = obj.maxLevel ? obj.maxLevel + "" : "";
+				inputIntro.text = obj.intro ? obj.intro + "" : "";
+				inputKissAss.text = obj.kissAss ? obj.kissAss + "" : "";
+				inputAtkSE.text = obj.atkSe ? obj.atkSe + "" : "";
+				inputDeadSE.text = obj.deadSe ? obj.deadSe + "" : "";
+				inputTics.text = obj.tics ? obj.tics + "" : "";
+				inputHeroHead.text = obj.headImg ? obj.headImg + "" : "";
+				boxAtkType.selectedIndex = obj.atkType ? int(obj.atkType) : 0;
+				boxQuality.selectedIndex = obj.quality ? int(obj.quality) : 0;
+				imgHead.source = FileUtil.getHeroHeadImgPath(_crtData.headImg);
+			}
+			
+			public function clear():void{
+				inputTid.text = "";
+				inputName.text = "";
+				inputInitLevel.text = "";
+				inputMaxLevel.text = "";
+				inputIntro.text = "";
+				inputKissAss.text = "";
+				inputAtkSE.text = "";
+				inputDeadSE.text = "";
+				inputTics.text = "";
+				inputHeroHead.text = "";
+				boxAtkType.selectedIndex = 0;
+				boxQuality.selectedIndex = 0;
+				imgHead.source = null;
+			}
+			
+			//----------------------
+			
 			
 			protected function boxAtkType_changeHandler(event:IndexChangeEvent):void
 			{
@@ -19,6 +87,54 @@
 				
 			}
 			
+			protected function changeInputData(propName:String, txt:String):void
+			{
+				if(_crtData[propName] + "" == txt){
+					return;
+				}
+				_crtData[propName] = txt;
+				AppCfg.getTopLevel().heroContent.updateCrtHeroListData();
+			}
+			
+			protected function inputTid_focusOutHandler(event:FocusEvent):void
+			{
+				// tid属性是唯一属性，需要判断是否重复
+				var tid:String = inputTid.text + "";
+				if(_crtData.templateId + "" == tid){
+					return;
+				}
+				var hasRepeatTid:Boolean = RepeatChkUtil.chkTidIsRepeatInArr(tid, 
+					AppCfg.getTopLevel().heroContent.heroListTotalData);
+				if(!hasRepeatTid){
+					_crtData.templateId = tid;
+					AppCfg.getTopLevel().heroContent.updateCrtHeroListData();
+				}
+			}
+			
+			protected function input_focusOutHandler(event:FocusEvent):void
+			{
+				if(event.currentTarget.id == "inputInitLevel"){
+					changeInputData(HeroTemplate.KEY_INIT_LEVEL, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputMaxLevel"){
+					changeInputData(HeroTemplate.KEY_MAX_LEVEL, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputIntro"){
+					changeInputData(HeroTemplate.KEY_INTRO, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputKissAss"){
+					changeInputData(HeroTemplate.KEY_KISS_ASS, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputAtkSE"){
+					changeInputData(HeroTemplate.KEY_ATK_SE, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputDeadSE"){
+					changeInputData(HeroTemplate.KEY_DEAD_SE, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputTics"){
+					changeInputData(HeroTemplate.KEY_TICS, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputHeroHead"){
+					changeInputData(HeroTemplate.KEY_HEAD_IMG, event.currentTarget.text + "");
+					imgHead.source = FileUtil.getHeroHeadImgPath(_crtData.headImg);
+				}else if(event.currentTarget.id == "inputName"){
+					changeInputData(HeroTemplate.KEY_NAME, event.currentTarget.text + "");
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -26,31 +142,36 @@
 	</fx:Declarations>
 	<s:Label x="5" y="5" text="基本信息"/>
 	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
-	<s:TextInput id="inputTid" x="42" y="25" width="90"/>
-	<s:Label x="145" y="30" text="名字"/>
-	<s:TextInput id="inputName" x="182" y="25" width="120"/>
-	<s:Label x="315" y="30" text="头像 ↓"/>
-	<s:Label x="185" y="60" text="初始等级"/>
-	<s:TextInput id="inputInitLevel" x="252" y="55" width="50" text="1"/>
-	<s:Label x="185" y="90" text="最大等级"/>
-	<s:TextInput id="inputMaxLevel" x="252" y="85" width="50" text="100"/>
+	<s:TextInput id="inputTid" x="32" y="25" width="90" restrict="0-9" focusOut="inputTid_focusOutHandler(event)"/>
+	<s:Label x="125" y="30" text="名字"/>
+	<s:TextInput id="inputName" x="162" y="25" width="120" focusOut="input_focusOutHandler(event)"/>
+	<s:Label x="185" y="98" text="头像"/>
+	<s:Label x="285" y="30" text="初始等级"/>
+	<s:TextInput id="inputInitLevel" x="352" y="25" width="40" text="1" restrict="0-9"  focusOut="input_focusOutHandler(event)"/>
+	<s:Label x="285" y="60" text="最大等级"/>
+	<s:TextInput id="inputMaxLevel" x="352" y="55" width="40" text="100" restrict="0-9" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="60" text="攻击方式"/>
-	<s:ComboBox id="boxAtkType" x="72" y="56" width="100" change="boxAtkType_changeHandler(event)"/>
-	<s:Label x="5" y="90" text="品质"/>
-	<s:ComboBox id="boxQuality" x="72" y="86" width="100" change="boxQuality_changeHandler(event)"/>
+	<s:ComboBox id="boxAtkType" x="72" y="56" width="83" change="boxAtkType_changeHandler(event)"
+				dataProvider="{_boxAtkTypeData}" itemRenderer="editor.normal.BoxNormalRender"
+				selectedIndex="0" labelFunction="ComboBoxUtil.getBoxFullValue"/>
+	<s:Label x="162" y="60" text="品质"/>
+	<s:ComboBox id="boxQuality" x="195" y="56" width="82" change="boxQuality_changeHandler(event)"
+				dataProvider="{_boxQualityData}" itemRenderer="editor.normal.BoxNormalRender"
+				selectedIndex="0" labelFunction="ComboBoxUtil.getBoxFullValue"/>
 	<s:Label x="5" y="283" text="简介"/>
-	<s:TextArea id="inputIntro" left="5" right="5" top="303" bottom="5"/>
+	<s:TextArea id="inputIntro" left="5" right="5" top="303" bottom="5" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="228" text="拍马屁"/>
-	<s:BorderContainer x="315" y="46" width="66" height="66">
+	<s:BorderContainer x="327" y="93" width="66" height="66">
 		<s:Image id="imgHead" x="0" y="0" width="64" height="64"/>
 	</s:BorderContainer>
-	<mx:HRule y="116" left="0" right="0"/>
+	<mx:HRule y="86" left="0" right="0"/>
 	<mx:HRule y="216" left="0" right="0"/>
-	<s:TextInput id="inputKissAss" y="223" left="58" right="5"/>
-	<s:Label x="5" y="128" text="攻击音效"/>
-	<s:TextInput id="inputAtkSE" x="72" y="123" width="100"/>
-	<s:Label x="185" y="128" text="死亡音效"/>
-	<s:TextInput id="inputDeadSE" x="252" y="123" width="100"/>
+	<s:TextInput id="inputKissAss" y="223" left="58" right="5" focusOut="input_focusOutHandler(event)"/>
+	<s:Label x="5" y="97" text="攻击音效"/>
+	<s:TextInput id="inputAtkSE" x="72" y="93" width="100" focusOut="input_focusOutHandler(event)"/>
+	<s:TextInput id="inputHeroHead" x="222" y="93" width="100" focusOut="input_focusOutHandler(event)"/>
+	<s:Label x="5" y="127" text="死亡音效"/>
+	<s:TextInput id="inputDeadSE" x="72" y="123" width="100" focusOut="input_focusOutHandler(event)"/>
 	<s:Label x="5" y="258" text="口头禅"/>
-	<s:TextInput id="inputTics" y="253" left="58" right="5"/>
+	<s:TextInput id="inputTics" y="253" left="58" right="5" focusOut="input_focusOutHandler(event)"/>
 </s:BorderContainer>

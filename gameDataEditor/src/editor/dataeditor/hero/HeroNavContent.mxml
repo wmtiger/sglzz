@@ -9,6 +9,8 @@
 		<![CDATA[
 			import cfg.AppCfg;
 			
+			import com.gamedata.template.HeroTemplate;
+			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
 			import editor.utils.CSVUtil;
@@ -17,6 +19,7 @@
 			import flash.utils.setTimeout;
 			
 			import mx.collections.ArrayCollection;
+			import mx.collections.ListCollectionView;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
@@ -25,7 +28,7 @@
 			
 			/////////////////////// 以下变量区
 			public static const KEY:String = "hero";
-			public static const CSV_HEAD:Array = ["templateId", "name", "atkType", "quality", "headImg"];
+//			public static const CSV_HEAD:Array = ["templateId", "name", "atkType", "quality", "headImg", "initLevel"];
 			
 			[Bindable]
 			private var _heroListData:ArrayCollection = new ArrayCollection();
@@ -39,6 +42,16 @@
 			
 			/////////////////////// 以上变量区
 			
+			public function get heroListTotalData():Array
+			{
+				return _heroListTotalData;
+			}
+			
+			public function updateCrtHeroListData():void
+			{
+				ListCollectionView(heroList.dataProvider).itemUpdated(heroList.selectedItem);
+			}
+
 			protected function btnAddHero_clickHandler(event:MouseEvent):void
 			{
 				if(_addHeroWnd == null){
@@ -53,7 +66,8 @@
 				
 				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
 				_heroListData.source = getFilterHeroArr(_heroListTotalData);
-//				heroList.dataProvider = new ArrayCollection([{templateId:10001, name:"吕布"},{templateId:10002, name:"关羽"}]);
+				
+				heroList.selectedIndex = 0;
 			}
 			
 			protected function onAddOneHero(event:EditEvt):void
@@ -114,13 +128,28 @@
 			
 			public function saveHeroDataToCsv():void
 			{
-				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,CSV_HEAD);
+				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,HeroTemplate.CSV_HEAD);
 				FileUtil.saveDBFile(KEY, csv);
 			}
 			
 			protected function heroList_changeHandler(event:IndexChangeEvent):void
 			{
 				_crtEditObj = heroList.selectedItem;
+				
+				flushInfo();
+			}
+			
+			protected function flushInfo():void
+			{
+				heroBaseInfoContent.editObj = _crtEditObj;
+				heroSoulBaseInfoContent.editObj = _crtEditObj;
+			}
+			
+			protected function heroList_valueCommitHandler(event:FlexEvent):void
+			{
+				_crtEditObj = heroList.selectedItem;
+				
+				flushInfo();
 			}
 			
 		]]>
@@ -129,10 +158,11 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:List id="heroList" left="10" top="35" bottom="40" width="140"
+	<s:List id="heroList" left="10" top="60" bottom="10" width="140" 
+			valueCommit="heroList_valueCommitHandler(event)" 
 			alternatingItemColors="[0xffffff,0xdfdfdf]" change="heroList_changeHandler(event)"
 			dataProvider="{_heroListData}" itemRenderer="editor.dataeditor.hero.HeroRender"></s:List>
-	<s:Button id="btnAddHero" left="10" bottom="10" width="140" label="增加武将"
+	<s:Button id="btnAddHero" left="10" top="30" width="140" height="24" label="增加武将"
 			  click="btnAddHero_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">
 		<hero:HeroBaseInfo id="heroBaseInfoContent" left="10" top="10" width="55%" height="65%"
