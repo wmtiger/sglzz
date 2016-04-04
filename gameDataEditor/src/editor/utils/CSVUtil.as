@@ -51,7 +51,7 @@ package editor.utils
 					span = "";
 				}
 				var value:String = obj[title];
-				if (value == null) 
+				if (value == null || value == "") 
 				{
 					value = NULL_PLACE_HOLDER;
 				}
