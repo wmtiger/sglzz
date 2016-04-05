@@ -27,8 +27,14 @@ package com.gamedata.template
 		public static const KEY_ATK_POINT:String = "atkPoint";
 		public static const KEY_SPEED_POINT:String = "speedPoint";
 		public static const KEY_DEF_POINT:String = "defPoint";
-		// 技能
+		// 技能[tid列表]
+		public static const KEY_SKILLS:String = "skills";
+		// 特性[tid列表]
+		public static const KEY_SPECIALS:String = "specials";
+		// 备注
+		public static const KEY_REMARK:String = "remark";
 		
+		public static const KEY:String = "hero";
 		
 		public static const CSV_HEAD:Array = [KEY_TEMPLATE_ID, KEY_NAME, KEY_INIT_LEVEL, KEY_MAX_LEVEL, KEY_INTRO, KEY_KISS_ASS,
 			KEY_ATK_SE,KEY_DEAD_SE,KEY_TICS,KEY_HEAD_IMG,KEY_ATK_TYPE,KEY_QUALITY,KEY_TONG_SHUAI,KEY_NEI_ZHENG,KEY_ZHI_LI,

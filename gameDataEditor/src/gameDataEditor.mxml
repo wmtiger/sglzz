@@ -7,7 +7,7 @@
 					   xmlns:herosoul="editor.dataeditor.herosoul.*"
 					   xmlns:item="editor.dataeditor.item.*"
 					   xmlns:equip="editor.dataeditor.equip.*"
-					   width="960" height="750"
+					   width="960" height="750" keyDown="windowedapplication1_keyDownHandler(event)"
 					   creationComplete="windowedapplication1_creationCompleteHandler(event)"
 					   closing="windowedapplication1_closingHandler(event)"
 					   fontFamily="微软雅黑" fontSize="15">
@@ -89,7 +89,18 @@
 			
 			private function saveAllCsv():void
 			{
-				heroContent.saveHeroDataToCsv();
+				heroContent.saveDataToCsv();
+				
+				Alert.show("保存csv完毕","提示");
+			}
+			
+			protected function windowedapplication1_keyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.ctrlKey && event.shiftKey && event.keyCode == 67){
+					trace("key ctrl and shift && c");
+					// 这里是按下ctrl+shift+c，意思是保存csv
+					saveAllCsv();
+				}
 			}
 			
 		]]>

@@ -7,28 +7,23 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import cfg.AppCfg;
-			
 			import com.gamedata.template.HeroTemplate;
 			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
 			import editor.utils.CSVUtil;
 			import editor.utils.FileUtil;
-			
-			import flash.utils.setTimeout;
+			import editor.utils.FilterUtil;
+			import editor.utils.InsertUtil;
 			
 			import mx.collections.ArrayCollection;
 			import mx.collections.ListCollectionView;
 			import mx.events.FlexEvent;
-			import mx.managers.PopUpManager;
 			
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
 			/////////////////////// 以下变量区
-			public static const KEY:String = "hero";
-//			public static const CSV_HEAD:Array = ["templateId", "name", "atkType", "quality", "headImg", "initLevel"];
 			
 			[Bindable]
 			private var _heroListData:ArrayCollection = new ArrayCollection();
@@ -37,8 +32,6 @@
 			private var _searchTempList:Array = [];// 搜索的时候的临时用列表
 			
 			private var _crtEditObj:Object;// 当前正在修改的
-			
-			private var _addHeroWnd:AddHeroWnd;// 增加武将界面
 			
 			/////////////////////// 以上变量区
 			
@@ -54,18 +47,15 @@
 
 			protected function btnAddHero_clickHandler(event:MouseEvent):void
 			{
-				if(_addHeroWnd == null){
-					_addHeroWnd = new AddHeroWnd();
-				}
-				PopUpManager.addPopUp(_addHeroWnd, AppCfg.getTopLevel(), true);
+				InsertUtil.addCell(EditEvt.ADD_ONE_HERO);
 			}
 			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
 				
-				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(KEY));
-				_heroListData.source = getFilterHeroArr(_heroListTotalData);
+				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(HeroTemplate.KEY));
+				filterArr(_heroListTotalData);
 				
 				heroList.selectedIndex = 0;
 			}
@@ -74,37 +64,14 @@
 			{
 				inputSearch.text = "";
 				_heroListTotalData.push(event.data);
-				_heroListData.source = getFilterHeroArr(_heroListTotalData);
+				filterArr(_heroListTotalData);
 				heroList.selectedItem = event.data;
-				
 			}
 			
-			protected function getFilterHeroArr(needFilterArr:Array):Array
+			protected function filterArr(arr:Array):void
 			{
-				var tempArr:Array = [];
-				var len:int = needFilterArr.length;
-				var i:int = 0;
-				var obj:Object;
-				var searchStr:String = inputSearch.text + "";
-				if(int(searchStr) > 0){
-					// 输入的是数字
-					for(i = 0; i < len; i++){
-						obj = needFilterArr[i];
-						if(String(obj.templateId).indexOf(searchStr) >= 0){
-							tempArr.push(obj);
-						}
-					}
-				}else{
-					// 输入的是其他文字
-					for(i = 0; i < len; i++){
-						obj = needFilterArr[i];
-						if(String(obj.name).indexOf(searchStr) >= 0){
-							tempArr.push(obj);
-						}
-					}
-				}
-				_searchTempList = tempArr;
-				return tempArr;
+				_searchTempList = FilterUtil.getFilterArr(arr, inputSearch.text + "");
+				_heroListData.source = _searchTempList;
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -116,20 +83,20 @@
 			protected function inputSearch_changeHandler(event:TextOperationEvent):void
 			{
 				if(inputSearch.text == ""){
-					_heroListData.source = getFilterHeroArr(_heroListTotalData);
+					filterArr(_heroListTotalData);
 				}else{
 					setTimeout(delayFilterHeroArr,500);
 				}
 			}
 			private function delayFilterHeroArr():void
 			{
-				_heroListData.source = getFilterHeroArr(_searchTempList);
+				filterArr(_searchTempList);
 			}
 			
-			public function saveHeroDataToCsv():void
+			public function saveDataToCsv():void
 			{
 				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,HeroTemplate.CSV_HEAD);
-				FileUtil.saveDBFile(KEY, csv);
+				FileUtil.saveDBFile(HeroTemplate.KEY, csv);
 			}
 			
 			protected function heroList_changeHandler(event:IndexChangeEvent):void
@@ -147,9 +114,7 @@
 			
 			protected function heroList_valueCommitHandler(event:FlexEvent):void
 			{
-				_crtEditObj = heroList.selectedItem;
-				
-				flushInfo();
+				heroList_changeHandler(null);
 			}
 			
 		]]>
@@ -169,14 +134,16 @@
 						   backgroundColor="#DBEAEF"/>
 		<hero:HeroSoulBaseInfo id="heroSoulBaseInfoContent" left="10" bottom="10" width="55%"
 							   height="32%" backgroundColor="#DBEAEF"/>
-		<hero:HeroSkillInfo id="heroSkillInfoContent" right="10" top="10" width="43%" height="65%"
+		<hero:HeroSkillInfo id="heroSkillInfoContent" right="10" top="10" width="43%" height="35%"
+							backgroundColor="#DBEAEF"/>
+		<hero:HeroSpecialInfo id="heroSpecialInfoContent" right="10" top="234" width="43%" height="178"
 							backgroundColor="#DBEAEF"/>
 		<hero:HeroRemarkInfo id="heroRemarkInfoContent" right="10" bottom="40" width="43%"
-							 height="28%" backgroundColor="#DBEAEF"/>
+							 height="168" backgroundColor="#DBEAEF"/>
 		<s:Button id="btnDelete" right="10" bottom="10" label="删除"
 				  click="btnDelete_clickHandler(event)"/>
 	</s:BorderContainer>
-	<s:TextInput id="inputSearch" left="40" right="790" top="0"
+	<s:TextInput id="inputSearch" left="40" top="0" width="110"
 				 change="inputSearch_changeHandler(event)" prompt="输入Tid或名字"/>
 	<s:Image x="10" y="0" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
 </s:NavigatorContent>

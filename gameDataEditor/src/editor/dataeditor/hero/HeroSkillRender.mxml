@@ -4,6 +4,8 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"
 				width="200" height="30" autoDrawBackground="true"
 				dataChange="resetData(event)"
+				doubleClickEnabled="true"
+				doubleClick="itemrenderer1_doubleClickHandler(event)"
 				fontFamily="微软雅黑" fontSize="15">
 	<fx:Script>
 		<![CDATA[
@@ -13,6 +15,17 @@
 			{
 				if(data){
 					labSkill.text = data.templateId + ": " + data.name;
+					
+				}
+			}
+			
+			protected function itemrenderer1_doubleClickHandler(event:MouseEvent):void
+			{
+				if(data){
+					// 有数据时，为修改数据
+					
+				}else{
+					// 没有数据时，为插入新数据
 					
 				}
 			}

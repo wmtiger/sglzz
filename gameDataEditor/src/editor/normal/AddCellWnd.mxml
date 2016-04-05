@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="360" height="240" close="titlewindow1_closeHandler(event)"
 			   removedFromStage="titlewindow1_removedFromStageHandler(event)"
-			   creationComplete="navigatorcontent1_creationCompleteHandler(event)" fontFamily="微软雅黑"
-			   fontSize="15" title="增加武将">
+			   creationComplete="navigatorcontent1_creationCompleteHandler(event)"
+			   fontFamily="微软雅黑" fontSize="15" title="增加项">
 	
 	<fx:Script>
 		<![CDATA[
@@ -18,6 +18,14 @@
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
+			//-------------------
+			// 变量定义区
+			/**
+			 * 当前的窗口需要增加的项的类型,此变量在窗口初始化后，一定要设置. eg:EditEvt.ADD_ONE_HERO,EditEvt.ADD_ONE_ITEM
+			 */
+			public var type:String = "";
+			//-------------------
+			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
 				this.x = AppCfg.getStage().stageWidth/2- this.width/2;
@@ -26,7 +34,8 @@
 			
 			protected function btnAdd_clickHandler(event:MouseEvent):void
 			{
-				EvtMgr.instance.dispatchEvent(new EditEvt(EditEvt.ADD_ONE_HERO, getData()));
+//				EvtMgr.instance.dispatchEvent(new EditEvt(EditEvt.ADD_ONE_HERO, getData()));
+				EvtMgr.instance.dispatchEvent(new EditEvt(type, getData()));
 				PopUpManager.removePopUp(this);
 			}
 			
@@ -50,7 +59,6 @@
 			{
 				clearData();
 			}
-			
 		]]>
 	</fx:Script>
 	
@@ -60,6 +68,6 @@
 	<s:Label x="10" y="15" text="Tid" verticalAlign="middle"/>
 	<s:TextInput id="inputTid" restrict="0-9" x="37" y="10" width="107" prompt="10001"/>
 	<s:Label x="152" y="15" text="名字"/>
-	<s:TextInput id="inputName" x="190" y="10" width="120" prompt="武将名字"/>
+	<s:TextInput id="inputName" x="190" y="10" width="120" prompt="增加项的名字"/>
 	<s:Button id="btnAdd" right="10" bottom="10" label="确认增加" click="btnAdd_clickHandler(event)"/>
 </s:TitleWindow>
