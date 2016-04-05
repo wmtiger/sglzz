@@ -90,6 +90,7 @@
 			private function saveAllCsv():void
 			{
 				heroContent.saveDataToCsv();
+				skillContent.saveDataToCsv();
 				
 				Alert.show("保存csv完毕","提示");
 			}

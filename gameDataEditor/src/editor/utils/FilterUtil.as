@@ -32,7 +32,28 @@ package editor.utils
 					}
 				}
 			}
+			
 			return tempArr;
+		}
+		
+		/**
+		 * 对列表排序，以Tid为key
+		 */
+		public static function sortArrByTid(tempArr:Array):void
+		{
+			tempArr.sort(sortFun,Array.NUMERIC);
+			
+		}
+		
+		private static function sortFun(a:Object, b:Object):Number
+		{
+			if(int(a.templateId) > int(b.templateId)){
+				return 1;
+			}else if(int(a.templateId) < int(b.templateId)){
+				return -1;
+			}else{
+				return 0
+			}
 		}
 	}
 }

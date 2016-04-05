@@ -2,22 +2,131 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					fontFamily="微软雅黑" fontSize="15" 
+					show="navigatorcontent1_showHandler(event)"
 					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:skill="editor.dataeditor.skill.*">
 	<fx:Script>
 		<![CDATA[
+			import com.gamedata.template.HeroTemplate;
+			import com.gamedata.template.SkillTemplate;
+			
+			import editor.evt.EditEvt;
+			import editor.evt.EvtMgr;
+			import editor.utils.CSVUtil;
+			import editor.utils.FileUtil;
+			import editor.utils.FilterUtil;
+			import editor.utils.InsertUtil;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ListCollectionView;
 			import mx.events.FlexEvent;
 			
-			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			
+			//-------------------
+			// 变量定义区
+			[Bindable]
+			private var _listData:ArrayCollection = new ArrayCollection();
+			
+			private var _listTotalData:Array = [];
+			private var _searchTempList:Array = [];// 搜索的时候的临时用列表
+			
+			private var _crtEditObj:Object;// 当前正在修改的
+			
+			//-------------------
+			
+			public function get listTotalData():Array
+			{
+				return _listTotalData;
+			}
+			
+			public function updateCrtListData():void
+			{
+				ListCollectionView(list.dataProvider).itemUpdated(list.selectedItem);
+			}
+			
+			protected function onAddOneSkill(event:EditEvt):void
+			{
+				inputSearch.text = "";
+				_listTotalData.push(event.data);
+				filterArr(_listTotalData);
+				list.selectedItem = event.data;
+			}
+			
+			protected function filterArr(arr:Array):void
+			{
+				_searchTempList = FilterUtil.getFilterArr(arr, inputSearch.text + "");
+				_listData.source = _searchTempList;
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
 				
 			}
 			
+			protected function inputSearch_changeHandler(event:TextOperationEvent):void
+			{
+				if(inputSearch.text == ""){
+					filterArr(_listTotalData);
+				}else{
+					setTimeout(delayFilterHeroArr,500);
+				}
+			}
+			private function delayFilterHeroArr():void
+			{
+				filterArr(_searchTempList);
+			}
+			
+			public function saveDataToCsv():void
+			{
+				FilterUtil.sortArrByTid(_listTotalData);// 放保存的时候来排序或者是在每次更改列表的时候排序
+				var csv:String = CSVUtil.parseObjListToCsv(_listTotalData,SkillTemplate.CSV_HEAD);
+				FileUtil.saveDBFile(SkillTemplate.KEY, csv);
+			}
+			
+			protected function list_changeHandler(event:IndexChangeEvent):void
+			{
+				_crtEditObj = list.selectedItem;
+				
+				flushInfo();
+			}
+			
+			protected function flushInfo():void
+			{
+				skillBaseInfo.editObj = _crtEditObj;
+//				heroSoulBaseInfoContent.editObj = _crtEditObj;
+			}
+			
+			protected function list_valueCommitHandler(event:FlexEvent):void
+			{
+				list_changeHandler(null);
+			}
+			
 			protected function btnAddSkill_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
+				InsertUtil.addCell(EditEvt.ADD_ONE_SKILL);
+			}
+			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_SKILL, onAddOneSkill);
 				
+				if(list){
+					_listTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(SkillTemplate.KEY));
+					filterArr(_listTotalData);
+					list.selectedIndex = 0;
+				}
+			}
+			
+			protected function navigatorcontent1_showHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				navigatorcontent1_creationCompleteHandler(null);
 			}
 			
 		]]>
@@ -25,11 +134,15 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:List id="skillList" left="10" top="0" bottom="40" width="140"
-			itemRenderer="editor.dataeditor.skill.SkillRender"></s:List>
-	<s:Button id="btnAddSkill" left="10" bottom="10" width="140" label="增加技能"
+	<s:List id="list" left="10" top="60" bottom="10" width="140" 
+			valueCommit="list_valueCommitHandler(event)" 
+			alternatingItemColors="[0xffffff,0xdfdfdf]" change="list_changeHandler(event)"
+			dataProvider="{_listData}" itemRenderer="editor.dataeditor.skill.SkillRender"></s:List>
+	<s:Button id="btnAddSkill" left="10" top="30" width="140" height="24" label="增加技能"
 			  click="btnAddSkill_clickHandler(event)"/>
 	<s:BorderContainer left="160" top="0" right="10" bottom="10">
-		<skill:SkillBaseInfo left="10" top="10"/>
+		<skill:SkillBaseInfo id="skillBaseInfo" left="10" top="10"/>
 	</s:BorderContainer>
+	<s:Image x="10" y="0" width="26" height="26" smooth="true" source="assets/icons/icon_search.png"/>
+	<s:TextInput id="inputSearch" left="40" top="0" width="110" prompt="输入Tid或名字"/>
 </s:NavigatorContent>

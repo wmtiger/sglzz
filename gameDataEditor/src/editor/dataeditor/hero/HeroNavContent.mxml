@@ -95,6 +95,7 @@
 			
 			public function saveDataToCsv():void
 			{
+				FilterUtil.sortArrByTid(_heroListTotalData);// 放保存的时候来排序或者是在每次更改列表的时候排序
 				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,HeroTemplate.CSV_HEAD);
 				FileUtil.saveDBFile(HeroTemplate.KEY, csv);
 			}

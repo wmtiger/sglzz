@@ -177,6 +177,15 @@ package editor.utils
 			return path;
 		}
 		/**
+		 * 获取编辑器的技能图像目录
+		 * @return 
+		 */		
+		public static function getSkillHeadImgPath(imgUri:String):String
+		{
+			var path:String = "assets/skillhead/" + imgUri;
+			return path;
+		}
+		/**
 		 * 获取编辑器的武将头像图像数据【弃用】
 		 * @return 
 		 */		

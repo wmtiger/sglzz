@@ -2,8 +2,113 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
+				   implements="editor.normal.IDataShow"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import cfg.AppCfg;
+			
+			import com.gamedata.template.SkillTemplate;
+			
+			import editor.utils.FileUtil;
+			import editor.utils.RepeatChkUtil;
+			import editor.utils.TemplateUtil;
+			
+			import spark.events.TextOperationEvent;
+			
+			//-------------------
+			// 变量定义区
+			
+			private var _crtData:Object;
+			
+			//-------------------
+			
+			//----------------------
+			// 实现接口 IDataShow
+			
+			public function set editObj(obj:Object):void{
+				this.clear();
+				_crtData = obj;
+				
+				if(obj == null){
+					return;
+				}
+				inputTid.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_TEMPLATE_ID);
+				inputName.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_NAME);
+				inputHeadImg.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_HEAD_IMG);
+				imgHead.source = FileUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
+			}
+			
+			public function clear():void{
+				inputTid.text = "";
+				inputName.text = "";
+				inputHeadImg.text = "";
+				imgHead.source = null;
+			}
+			
+			//----------------------
+			
+			protected function changeInputData(propName:String, txt:String):void
+			{
+				if(_crtData[propName] + "" == txt){
+					return;
+				}
+				_crtData[propName] = txt;
+				AppCfg.getTopLevel().skillContent.updateCrtListData();
+			}
+
+			protected function inputTid_focusOutHandler(event:FocusEvent):void
+			{
+				// tid属性是唯一属性，需要判断是否重复
+				var tid:String = inputTid.text + "";
+				if(_crtData.templateId + "" == tid){
+					return;
+				}
+				var hasRepeatTid:Boolean = RepeatChkUtil.chkTidIsRepeatInArr(tid, 
+					AppCfg.getTopLevel().skillContent.listTotalData);
+				if(!hasRepeatTid){
+					_crtData.templateId = tid;
+					AppCfg.getTopLevel().skillContent.updateCrtListData();
+				}
+			}
+			
+			protected function input_focusOutHandler(event:FocusEvent):void
+			{
+				if(event.currentTarget.id == "inputName"){
+					changeInputData(SkillTemplate.KEY_NAME, event.currentTarget.text + "");
+				}else if(event.currentTarget.id == "inputHeadImg"){
+					changeInputData(SkillTemplate.KEY_HEAD_IMG, event.currentTarget.text + "");
+					imgHead.source = FileUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
+				}
+				//else if(event.currentTarget.id == "inputIntro"){
+//					changeInputData(HeroTemplate.KEY_INTRO, event.currentTarget.text + "");
+//				}else if(event.currentTarget.id == "inputKissAss"){
+//					changeInputData(HeroTemplate.KEY_KISS_ASS, event.currentTarget.text + "");
+//				}else if(event.currentTarget.id == "inputAtkSE"){
+//					changeInputData(HeroTemplate.KEY_ATK_SE, event.currentTarget.text + "");
+//				}else if(event.currentTarget.id == "inputDeadSE"){
+//					changeInputData(HeroTemplate.KEY_DEAD_SE, event.currentTarget.text + "");
+//				}else if(event.currentTarget.id == "inputTics"){
+//					changeInputData(HeroTemplate.KEY_TICS, event.currentTarget.text + "");
+//				}else if(event.currentTarget.id == "inputHeroHead"){
+//					changeInputData(HeroTemplate.KEY_HEAD_IMG, event.currentTarget.text + "");
+//					imgHead.source = FileUtil.getHeroHeadImgPath(_crtData.headImg);
+//				}
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	<s:Label x="5" y="5" text="基本信息"/>
+	<s:Label x="5" y="30" text="Tid" verticalAlign="middle"/>
+	<s:TextInput id="inputTid" x="32" y="25" width="65" restrict="0-9" focusOut="inputTid_focusOutHandler(event)"/>
+	<s:Label x="100" y="30" text="名字"/>
+	<s:TextInput id="inputName" x="135" y="25" width="100" focusOut="input_focusOutHandler(event)"/>
+	<s:Label x="240" y="30" text="图像"/>
+	<s:TextInput id="inputHeadImg" x="277" y="25" width="80" focusOut="input_focusOutHandler(event)"/>
+	<s:BorderContainer x="361" y="20" width="34" height="34">
+		<s:Image id="imgHead" x="0" y="0" width="32" height="32"/>
+	</s:BorderContainer>
 </s:BorderContainer>
