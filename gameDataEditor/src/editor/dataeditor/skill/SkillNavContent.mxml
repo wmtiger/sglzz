@@ -3,6 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					fontFamily="微软雅黑" fontSize="15" 
 					show="navigatorcontent1_showHandler(event)"
+					hide="navigatorcontent1_hideHandler(event)"
 					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:skill="editor.dataeditor.skill.*">
 	<fx:Script>
@@ -107,15 +108,17 @@
 			
 			protected function btnAddSkill_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub
-				InsertUtil.addCell(EditEvt.ADD_ONE_SKILL);
+				InsertUtil.addCell(EditEvt.ADD_ONE_SKILL);// 增加一个技能模板
 			}
 			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
+			}
+			
+			protected function navigatorcontent1_showHandler(event:FlexEvent):void
+			{
 				// TODO Auto-generated method stub
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_SKILL, onAddOneSkill);
-				
 				if(list){
 					_listTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(SkillTemplate.KEY));
 					filterArr(_listTotalData);
@@ -123,10 +126,9 @@
 				}
 			}
 			
-			protected function navigatorcontent1_showHandler(event:FlexEvent):void
+			protected function navigatorcontent1_hideHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
-				navigatorcontent1_creationCompleteHandler(null);
+				EvtMgr.instance.removeEventListener(EditEvt.ADD_ONE_SKILL, onAddOneSkill);
 			}
 			
 		]]>

@@ -2,18 +2,59 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   fontFamily="微软雅黑" fontSize="15" 
+				   show="bordercontainer1_showHandler(event)"
+				   hide="bordercontainer1_hideHandler(event)"
 				   creationComplete="navigatorcontent1_creationCompleteHandler(event)"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" width="200" height="300">
 	<fx:Script>
 		<![CDATA[
+			import com.gamedata.template.SkillTemplate;
+			
+			import editor.evt.EditEvt;
+			import editor.evt.EvtMgr;
+			import editor.utils.CSVUtil;
+			import editor.utils.FileUtil;
+			import editor.utils.TemplateUtil;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
+			//-------------------
+			// 变量定义区
+			[Bindable]
+			private var _listData:ArrayCollection = new ArrayCollection();
+			
+			//-------------------
+			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
-				heroSkillList.dataProvider = new ArrayCollection([{templateId:10001, name:"呼风唤雨"}, null]);
+//				list.dataProvider = new ArrayCollection([{templateId:10001, name:"呼风唤雨"}, null]);
+				bordercontainer1_showHandler(null);
+			}
+			
+			protected function bordercontainer1_showHandler(event:FlexEvent):void
+			{
+				EvtMgr.instance.addEventListener(EditEvt.INSERT_HERO_SKILL, onInsertOneHeroSkill);
+				if(list){
+					var arr:Array = CSVUtil.parseCsvToList(FileUtil.getDBFileData(SkillTemplate.KEY));
+					arr.push(null);
+					_listData.source = arr;
+					
+//					TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_TEMPLATE_ID);
+					list.selectedIndex = 0;
+				}
+			}
+			
+			protected function bordercontainer1_hideHandler(event:FlexEvent):void
+			{
+				EvtMgr.instance.removeEventListener(EditEvt.ADD_ONE_SKILL, onInsertOneHeroSkill);
 				
+			}
+			
+			protected function onInsertOneHeroSkill(event:EditEvt):void
+			{
+				_listData.source[_listData.length] = event.data;
+				_listData.source.push(null);
 			}
 			
 		]]>
@@ -22,6 +63,6 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Label x="5" y="5" text="武将技能信息"/>
-	<s:List id="heroSkillList" left="5" right="5" top="25" bottom="5"
+	<s:List id="list" left="5" right="5" top="25" bottom="5" dataProvider="{_listData}"
 			itemRenderer="editor.dataeditor.hero.HeroSkillRender"></s:List>
 </s:BorderContainer>

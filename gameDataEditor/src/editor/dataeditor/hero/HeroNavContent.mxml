@@ -2,6 +2,8 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					fontFamily="微软雅黑" fontSize="15" 
+					show="navigatorcontent1_showHandler(event)"
+					hide="navigatorcontent1_hideHandler(event)"
 					creationComplete="navigatorcontent1_creationCompleteHandler(event)"
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="640" xmlns:hero="editor.dataeditor.hero.*">
 	
@@ -12,6 +14,7 @@
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
 			import editor.utils.CSVUtil;
+			import editor.utils.CalcUtil;
 			import editor.utils.FileUtil;
 			import editor.utils.FilterUtil;
 			import editor.utils.InsertUtil;
@@ -23,8 +26,8 @@
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
-			/////////////////////// 以下变量区
-			
+			//-------------------
+			// 变量定义区
 			[Bindable]
 			private var _heroListData:ArrayCollection = new ArrayCollection();
 			
@@ -33,7 +36,9 @@
 			
 			private var _crtEditObj:Object;// 当前正在修改的
 			
-			/////////////////////// 以上变量区
+			private var _showing:Boolean = false;
+			
+			//-------------------
 			
 			public function get heroListTotalData():Array
 			{
@@ -52,12 +57,7 @@
 			
 			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
 			{
-				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
-				
-				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(HeroTemplate.KEY));
-				filterArr(_heroListTotalData);
-				
-				heroList.selectedIndex = 0;
+				navigatorcontent1_showHandler(null);
 			}
 			
 			protected function onAddOneHero(event:EditEvt):void
@@ -116,6 +116,23 @@
 			protected function heroList_valueCommitHandler(event:FlexEvent):void
 			{
 				heroList_changeHandler(null);
+			}
+			
+			protected function navigatorcontent1_showHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
+				
+				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(HeroTemplate.KEY));
+				filterArr(_heroListTotalData);
+				
+				heroList.selectedIndex = 0;
+			}
+			
+			protected function navigatorcontent1_hideHandler(event:FlexEvent):void
+			{
+				EvtMgr.instance.removeEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
+				
 			}
 			
 		]]>

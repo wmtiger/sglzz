@@ -189,7 +189,7 @@ package editor.utils
 		 * 获取编辑器的武将头像图像数据【弃用】
 		 * @return 
 		 */		
-		public static function getHeroHeadImgData(imgUri:String):BitmapData
+		/*public static function getHeroHeadImgData(imgUri:String):BitmapData
 		{
 			var path:String = "";
 			var setObj:Object = getSettingFileObj();
@@ -210,7 +210,7 @@ package editor.utils
 				return bmd;
 			}
 			return null;
-		}
+		}*/
 		/**
 		 * 获取读取的文件是什么格式
 		 * @param fileData

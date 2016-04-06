@@ -9,6 +9,9 @@
 				fontFamily="微软雅黑" fontSize="15">
 	<fx:Script>
 		<![CDATA[
+			import editor.evt.EditEvt;
+			import editor.utils.InsertUtil;
+			
 			import mx.events.FlexEvent;
 			
 			protected function resetData(event:FlexEvent):void
@@ -26,7 +29,7 @@
 					
 				}else{
 					// 没有数据时，为插入新数据
-					
+					InsertUtil.addCell(EditEvt.INSERT_HERO_SKILL);
 				}
 			}
 			

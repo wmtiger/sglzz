@@ -23,11 +23,13 @@ package editor.utils
 			var csv:String = titleArr.join(COL_SPAN_STR);
 			
 			csv += ROW_SPAN_STR;
+			csv = csv.replace("\r","");
 			
 			for (var i:int = 0; i < len; i++) 
 			{
 				var obj:Object = list[i];
 				csv += parseObjToCsvStr(obj, titleArr);
+				csv = csv.replace("\r","");
 				var span:String = ROW_SPAN_STR;
 				if (i + 1 >= len) 
 				{
@@ -89,7 +91,8 @@ package editor.utils
 						if(arr[j] == NULL_PLACE_HOLDER){
 							obj[titleList[j]] = "";
 						}else{
-							obj[titleList[j]] = arr[j];
+							var no_r_str:String = String(arr[j]).replace("\r","");
+							obj[titleList[j]] = no_r_str;
 						}
 					}
 					objList[i] = obj;
