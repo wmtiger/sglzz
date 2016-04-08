@@ -1,4 +1,4 @@
-package editor.utils
+package com.gamedata.utils
 {
 	public class FilterUtil
 	{

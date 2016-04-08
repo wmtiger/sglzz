@@ -16,29 +16,43 @@
 		<![CDATA[
 			import cfg.AppCfg;
 			
-			import editor.setting.PathSettingWnd;
-			import editor.utils.FileUtil;
+			import com.gamedata.template.base.Template;
+			import com.gamedata.utils.FileUtil;
 			
-			import mx.collections.ArrayCollection;
+			import editor.dataeditor.DataEditorTabNavigator;
+			import editor.dataeditor.hero.HeroNavContent;
+			import editor.dataeditor.skill.SkillNavContent;
+			import editor.setting.PathSettingWnd;
+			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.events.MenuEvent;
 			import mx.managers.PopUpManager;
 			
-			/////////////////////// 以下变量区
-			
-//			private const tabNames:ArrayCollection = new ArrayCollection(["武将", "将魂", "技能", "物品", "状态", "副本", "公共事件", "系统", "用语"]);
+			//-----------------
+			// 以下变量区
 			
 			private var _settingWnd:PathSettingWnd;
 			
-			/////////////////////// 以上变量区
+			private var _dataEditorNav:DataEditorTabNavigator;
+			
+			//-----------------
 			
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
+				
 				if(!FileUtil.hasSettingFileObj()){
 					// 如果没有设置过存储路径，跳出提示
-					Alert.show("你还没有设置存储路径，请设置后再进行使用。","提示",4,this,onChkSettingHandler);
+					Alert.show("你还没有设置存储路径，请设置后\n重新打开编辑器进行使用。","提示",4,this,onChkSettingHandler);
+				}else{
+					initTemplate();
 				}
+			}
+			
+			private function initTemplate():void
+			{
+				Template.initTemplateSetting(FileUtil.getSettingRootPath(), Template.SUFFIX_TYPE_CSV);
+				
 			}
 			
 			protected function onChkSettingHandler(event:Event):void{
@@ -66,13 +80,11 @@
 			{
 				if(event.label == "关于编辑器"){
 					Alert.show("当前版本\nv"+AppCfg.version, "关于",4);
-				}else if(event.label == "全部保存"){
-					
+				}else if(event.label == "静态模板库"){
+					startupDataEditor();
 				}else if(event.label == "全部另存为CSV"){
 					saveAllCsv();
-				}else if(event.label == "全部另存为JSON"){
-					
-				}else if(event.label == "全部另存为二进制"){
+				}else if(event.label == "全部另存为BIN"){
 					
 				}else if(event.label == "设置"){
 					openSettingWnd();
@@ -83,14 +95,14 @@
 			{
 				if(_settingWnd == null){
 					_settingWnd = new PathSettingWnd();
+					_settingWnd.setOverCallBack = initTemplate;
 				}
 				PopUpManager.addPopUp(_settingWnd, AppCfg.getTopLevel(), true);
 			}
 			
 			private function saveAllCsv():void
 			{
-				heroContent.saveDataToCsv();
-				skillContent.saveDataToCsv();
+				Template.saveToFileAll();
 				
 				Alert.show("保存csv完毕","提示");
 			}
@@ -104,19 +116,47 @@
 				}
 			}
 			
+			private function startupDataEditor():void
+			{
+				if(_dataEditorNav == null)
+				{
+					_dataEditorNav = new DataEditorTabNavigator();
+					_dataEditorNav.bottom = _dataEditorNav.left = _dataEditorNav.right = 10;
+					_dataEditorNav.top = 40;
+					this.addElement(_dataEditorNav);
+				}
+			}
+			
+			private function closeDataEditor():void
+			{
+				if(_dataEditorNav)
+					removeElement(_dataEditorNav);
+			}
+			
+			public function get heroContent():HeroNavContent{
+				if(_dataEditorNav)
+					return _dataEditorNav.heroContent;
+				return null;
+			}
+			
+			public function get skillContent():SkillNavContent{
+				if(_dataEditorNav)
+					return _dataEditorNav.skillContent;
+				return null;
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 		<fx:XMLList id="menuBar">
 			<menuitem label="文件">
-				<menuitem label="全部保存"/>
 				<menuitem label="全部另存为CSV"/>
-				<menuitem label="全部另存为JSON"/>
+				<menuitem label="全部另存为BIN"/>
 				<menuitem label="" type="separator"/>
-				<menuitem label="全部另存为二进制"/>
 			</menuitem>
 			<menuitem label="工具">
+				<menuitem label="静态模板库"/>
 				<menuitem label="设置"/>
 			</menuitem>
 			<menuitem label="帮助">
@@ -124,13 +164,13 @@
 			</menuitem>
 		</fx:XMLList>
 	</fx:Declarations>
-	<mx:TabNavigator left="10" right="10" top="40" bottom="10">
+	<!--<mx:TabNavigator left="10" right="10" top="40" bottom="10">
 		<hero:HeroNavContent id="heroContent" width="100%" height="100%" label="武将" />
 		<herosoul:HeroSoulNavContent id="heroSoulContent" width="100%" height="100%" label="将魂" />
 		<skill:SkillNavContent id="skillContent" width="100%" height="100%" label="技能" />
 		<item:ItemNavContent id="itemContent" width="100%" height="100%" label="物品" />
 		<equip:EquipNavContent width="100%" height="100%" label="装备" />
-	</mx:TabNavigator>
+	</mx:TabNavigator>-->
 	<mx:MenuBar left="0" right="0" top="0" height="30" change="menubar1_changeHandler(event)"
 				dataProvider="{menuBar}" labelField="@label"></mx:MenuBar>
 </s:WindowedApplication>

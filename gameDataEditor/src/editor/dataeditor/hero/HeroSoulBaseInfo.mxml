@@ -8,7 +8,7 @@
 		<![CDATA[
 			import com.gamedata.template.HeroTemplate;
 			
-			import editor.utils.TemplateUtil;
+			import com.gamedata.utils.TemplateUtil;
 			
 			import spark.events.TextOperationEvent;
 			

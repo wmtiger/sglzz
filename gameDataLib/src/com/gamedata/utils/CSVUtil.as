@@ -1,4 +1,4 @@
-package editor.utils
+package com.gamedata.utils
 {
 	public class CSVUtil
 	{
@@ -52,11 +52,21 @@ package editor.utils
 				{
 					span = "";
 				}
-				var value:String = obj[title];
-				if (value == null || value == "") 
-				{
+				var value:String = "";
+				var tempValue:* = obj[title];
+				if(tempValue){
+					if(tempValue is String){
+						if (tempValue == "") 
+							value = NULL_PLACE_HOLDER;
+						else
+							value = tempValue + "";
+					}else if(tempValue is Array){
+						value = "[" + tempValue + "]";
+					}
+				}else{
 					value = NULL_PLACE_HOLDER;
 				}
+				
 				str += (value + span);
 			}
 			return str;

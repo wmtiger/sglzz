@@ -3,6 +3,14 @@
   <includeClasses>
     <classEntry path="com.gamedata.template.ItemTemplate"/>
     <classEntry path="com.gamedata.vo.ItemVO"/>
+    <classEntry path="com.gamedata.template.base.TemplateData"/>
+    <classEntry path="com.gamedata.utils.TemplateUtil"/>
+    <classEntry path="com.gamedata.utils.FileUtil"/>
+    <classEntry path="com.gamedata.utils.RepeatChkUtil"/>
+    <classEntry path="com.gamedata.utils.CSVUtil"/>
+    <classEntry path="com.gamedata.utils.FilterUtil"/>
+    <classEntry path="com.gamedata.utils.TemplateReader"/>
+    <classEntry path="com.gamedata.utils.TemplateWriter"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

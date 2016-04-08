@@ -10,12 +10,12 @@
 		<![CDATA[
 			import com.gamedata.template.HeroTemplate;
 			import com.gamedata.template.SkillTemplate;
+			import com.gamedata.utils.CSVUtil;
+			import com.gamedata.utils.FileUtil;
+			import com.gamedata.utils.FilterUtil;
 			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
-			import editor.utils.CSVUtil;
-			import editor.utils.FileUtil;
-			import editor.utils.FilterUtil;
 			import editor.utils.InsertUtil;
 			
 			import mx.collections.ArrayCollection;
@@ -85,7 +85,7 @@
 			{
 				FilterUtil.sortArrByTid(_listTotalData);// 放保存的时候来排序或者是在每次更改列表的时候排序
 				var csv:String = CSVUtil.parseObjListToCsv(_listTotalData,SkillTemplate.CSV_HEAD);
-				FileUtil.saveDBFile(SkillTemplate.KEY, csv);
+				FileUtil.saveDBFile(SkillTemplate.TYPE, csv);
 			}
 			
 			protected function list_changeHandler(event:IndexChangeEvent):void
@@ -120,7 +120,8 @@
 				// TODO Auto-generated method stub
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_SKILL, onAddOneSkill);
 				if(list){
-					_listTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(SkillTemplate.KEY));
+					_listTotalData = SkillTemplate.allTemplates;
+//					_listTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(SkillTemplate.TYPE));
 					filterArr(_listTotalData);
 					list.selectedIndex = 0;
 				}

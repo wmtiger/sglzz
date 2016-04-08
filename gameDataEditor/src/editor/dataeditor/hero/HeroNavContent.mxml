@@ -10,13 +10,14 @@
 	<fx:Script>
 		<![CDATA[
 			import com.gamedata.template.HeroTemplate;
+			import com.gamedata.utils.CSVUtil;
+			import com.gamedata.utils.FileUtil;
+			import com.gamedata.utils.FilterUtil;
+			import com.gamedata.utils.TemplateUtil;
 			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
-			import editor.utils.CSVUtil;
 			import editor.utils.CalcUtil;
-			import editor.utils.FileUtil;
-			import editor.utils.FilterUtil;
 			import editor.utils.InsertUtil;
 			
 			import mx.collections.ArrayCollection;
@@ -55,11 +56,6 @@
 				InsertUtil.addCell(EditEvt.ADD_ONE_HERO);
 			}
 			
-			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
-			{
-				navigatorcontent1_showHandler(null);
-			}
-			
 			protected function onAddOneHero(event:EditEvt):void
 			{
 				inputSearch.text = "";
@@ -76,9 +72,23 @@
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub
-				
+				var idx:int = TemplateUtil.search(int(_crtEditObj.templateId), _heroListTotalData);
+				if(idx >= 0)
+				{
+					_heroListTotalData.splice(idx, 1);
+					
+					inputSearch.text = "";
+					filterArr(_heroListTotalData);
+					if(_heroListTotalData.length > 0){
+						var newIdx:int = 0;
+						if(idx - 1 >= 0){
+							newIdx = idx - 1;
+						}
+						heroList.selectedItem = _heroListTotalData[newIdx];
+					}
+				}
 			}
+			
 			
 			protected function inputSearch_changeHandler(event:TextOperationEvent):void
 			{
@@ -93,13 +103,6 @@
 				filterArr(_searchTempList);
 			}
 			
-			public function saveDataToCsv():void
-			{
-				FilterUtil.sortArrByTid(_heroListTotalData);// 放保存的时候来排序或者是在每次更改列表的时候排序
-				var csv:String = CSVUtil.parseObjListToCsv(_heroListTotalData,HeroTemplate.CSV_HEAD);
-				FileUtil.saveDBFile(HeroTemplate.KEY, csv);
-			}
-			
 			protected function heroList_changeHandler(event:IndexChangeEvent):void
 			{
 				_crtEditObj = heroList.selectedItem;
@@ -111,6 +114,7 @@
 			{
 				heroBaseInfoContent.editObj = _crtEditObj;
 				heroSoulBaseInfoContent.editObj = _crtEditObj;
+				heroSkillInfoContent.editObj = _crtEditObj;
 			}
 			
 			protected function heroList_valueCommitHandler(event:FlexEvent):void
@@ -118,12 +122,16 @@
 				heroList_changeHandler(null);
 			}
 			
+			protected function navigatorcontent1_creationCompleteHandler(event:FlexEvent):void
+			{
+				navigatorcontent1_showHandler(null);
+			}
+			
 			protected function navigatorcontent1_showHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
 				EvtMgr.instance.addEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
 				
-				_heroListTotalData = CSVUtil.parseCsvToList(FileUtil.getDBFileData(HeroTemplate.KEY));
+				_heroListTotalData = HeroTemplate.allTemplates;
 				filterArr(_heroListTotalData);
 				
 				heroList.selectedIndex = 0;
@@ -132,7 +140,6 @@
 			protected function navigatorcontent1_hideHandler(event:FlexEvent):void
 			{
 				EvtMgr.instance.removeEventListener(EditEvt.ADD_ONE_HERO, onAddOneHero);
-				
 			}
 			
 		]]>

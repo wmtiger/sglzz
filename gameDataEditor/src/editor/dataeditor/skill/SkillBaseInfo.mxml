@@ -9,10 +9,11 @@
 			import cfg.AppCfg;
 			
 			import com.gamedata.template.SkillTemplate;
+			import com.gamedata.utils.FileUtil;
+			import com.gamedata.utils.RepeatChkUtil;
+			import com.gamedata.utils.TemplateUtil;
 			
-			import editor.utils.FileUtil;
-			import editor.utils.RepeatChkUtil;
-			import editor.utils.TemplateUtil;
+			import editor.utils.FileUrlUtil;
 			
 			import spark.events.TextOperationEvent;
 			
@@ -36,7 +37,7 @@
 				inputTid.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_TEMPLATE_ID);
 				inputName.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_NAME);
 				inputHeadImg.text = TemplateUtil.getDataByObjKey(obj, SkillTemplate.KEY_HEAD_IMG);
-				imgHead.source = FileUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
+				imgHead.source = FileUrlUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
 			}
 			
 			public function clear():void{
@@ -78,7 +79,7 @@
 					changeInputData(SkillTemplate.KEY_NAME, event.currentTarget.text + "");
 				}else if(event.currentTarget.id == "inputHeadImg"){
 					changeInputData(SkillTemplate.KEY_HEAD_IMG, event.currentTarget.text + "");
-					imgHead.source = FileUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
+					imgHead.source = FileUrlUtil.getSkillHeadImgPath(_crtData[SkillTemplate.KEY_HEAD_IMG]);
 				}
 				//else if(event.currentTarget.id == "inputIntro"){
 //					changeInputData(HeroTemplate.KEY_INTRO, event.currentTarget.text + "");

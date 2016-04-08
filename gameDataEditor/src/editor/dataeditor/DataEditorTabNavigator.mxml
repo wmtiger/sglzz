@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TabNavigator xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				 xmlns:s="library://ns.adobe.com/flex/spark" 
+				 creationComplete="tabnavigator1_creationCompleteHandler(event)"
+				 change="tabnavigator1_changeHandler(event)"
+				 xmlns:mx="library://ns.adobe.com/flex/mx" width="940" height="730" fontFamily="微软雅黑" fontSize="15"
+				 xmlns:hero="editor.dataeditor.hero.*" xmlns:herosoul="editor.dataeditor.herosoul.*" 
+				 xmlns:skill="editor.dataeditor.skill.*" xmlns:item="editor.dataeditor.item.*" xmlns:equip="editor.dataeditor.equip.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			
+			import spark.components.NavigatorContent;
+			//-----------------
+			// 以下变量区
+			
+			//			private const tabNames:ArrayCollection = new ArrayCollection(["武将", "将魂", "技能", "物品", "状态", "副本", "公共事件", "系统", "用语"]);
+			//-----------------
+			
+			protected function tabnavigator1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function tabnavigator1_changeHandler(event:IndexChangedEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace(selectedChild.label);
+			}
+			
+			private function initNavData():void
+			{
+				if(selectedChild.label == "武将"){
+					
+				}else if(selectedChild.label == "将魂"){
+					
+				}else if(selectedChild.label == "技能"){
+					
+				}else if(selectedChild.label == "物品"){
+					
+				}else if(selectedChild.label == "装备"){
+					
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<hero:HeroNavContent id="heroContent" width="100%" height="100%" label="武将" />
+	<herosoul:HeroSoulNavContent id="heroSoulContent" width="100%" height="100%" label="将魂" />
+	<skill:SkillNavContent id="skillContent" width="100%" height="100%" label="技能" />
+	<item:ItemNavContent id="itemContent" width="100%" height="100%" label="物品" />
+	<equip:EquipNavContent width="100%" height="100%" label="装备" />
+</mx:TabNavigator>

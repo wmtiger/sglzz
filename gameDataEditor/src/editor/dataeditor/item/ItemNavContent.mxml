@@ -10,8 +10,8 @@
 			
 			import editor.evt.EditEvt;
 			import editor.evt.EvtMgr;
-			import editor.utils.CSVUtil;
-			import editor.utils.FileUtil;
+			import com.gamedata.utils.CSVUtil;
+			import com.gamedata.utils.FileUtil;
 			
 			import mx.collections.ArrayCollection;
 			import mx.core.FlexGlobals;
